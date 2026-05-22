@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feeling Ambientes — Controle de Manutenção</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Feeling brand */
+  --navy:      #1a2340;
+  --navy-mid:  #212d4f;
+  --navy-soft: #2b3a65;
+  --cream:     #f5f0e8;
+  --cream-dim: #e8e2d6;
+  --green:     #8dc63f;
+  --blue-b:    #2850a0;
+  --white:     #ffffff;
+  --muted:     #8892b0;
+  --border:    #2e3d6b;
+  /* status */
+  --red:       #e05c3a;
+  --amber:     #f0a500;
+  --teal:      #3ecf8e;
+  --purple:    #a78bfa;
+  --sky:       #67e8f9;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--navy);
+  color: var(--cream);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--navy-mid);
+  border-bottom: 2px solid var(--green);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+/* SVG logo feeling ambientes */
+.logo-wrap {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  user-select: none;
+}
+.logo-feeling {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  color: var(--green);
+  line-height: 0.9;
+}
+.logo-ambientes {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  padding-left: 2px;
+  margin-top: 3px;
+}
+.logo-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+  margin: 0 4px;
+}
+.header-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.header-kpis {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+}
+.kpi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: 8px;
+  background: var(--navy-soft);
+  border: 1px solid var(--border);
+  min-width: 72px;
+}
+.kpi .n {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.kpi .lb {
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+  white-space: nowrap;
+}
+.kpi.green .n { color: var(--green); }
+.kpi.red .n   { color: var(--red); }
+.kpi.amber .n { color: var(--amber); }
+.kpi.sky .n   { color: var(--sky); }
+
+/* ── MAIN GRID ── */
+main {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 28px 20px;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.card-hd {
+  padding: 16px 22px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--navy-soft), var(--navy-mid));
+}
+.card-hd h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.card-hd .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
+/* ── FORM ── */
+.form-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.field label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+input, select, textarea {
+  width: 100%;
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--cream);
+  font-family: 'Barlow', sans-serif;
+  font-size: 16px;
+  padding: 12px 13px;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+  -webkit-text-size-adjust: 100%;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--green); }
+select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238892b0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+textarea { resize: vertical; min-height: 68px; }
+
+/* autocomplete */
+.ac-wrap { position: relative; }
+.ac-drop {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--navy-mid);
+  border: 1px solid var(--green);
+  border-radius: 10px;
+  max-height: 260px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 9999;
+  display: none;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+}
+.ac-drop.open { display: block; }
+.ac-item {
+  padding: 13px 15px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  min-height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.ac-item:last-child { border-bottom: none; }
+.ac-item:hover, .ac-item.hi, .ac-item:active { background: var(--navy-soft); }
+.ac-item strong { color: var(--green); font-size: 0.75rem; }
+.ac-item .nome { color: var(--cream); display: block; margin-top: 1px; line-height: 1.3; }
+.ac-item .ct { font-size: 0.68rem; color: var(--muted); display: block; margin-top: 3px; }
+
+/* priority pills */
+.prio-group { display: flex; gap: 8px; }
+.prio-btn {
+  flex: 1; padding: 9px 0;
+  border-radius: 7px;
+  border: 1.5px solid var(--border);
+  background: var(--navy);
+  color: var(--muted);
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.78rem; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.prio-btn:hover { border-color: var(--cream); color: var(--cream); }
+.prio-btn.sel.critica  { background:#3d1000; border-color:var(--red);   color:var(--red); }
+.prio-btn.sel.media    { background:#3d2300; border-color:var(--amber); color:var(--amber); }
+.prio-btn.sel.baixa    { background:#0d2e10; border-color:var(--green); color:var(--green); }
+
+/* qty */
+.qty-row { display:flex; align-items:center; gap:10px; }
+.qty-btn {
+  width:34px; height:34px; border-radius:7px;
+  border:1px solid var(--border); background:var(--navy);
+  color:var(--cream); font-size:1.1rem; cursor:pointer;
+  flex-shrink:0; transition:background 0.15s;
+}
+.qty-btn:hover { background:var(--navy-soft); border-color:var(--green); }
+#input-qtd { text-align:center; font-family:'Barlow Condensed',sans-serif; font-size:1.15rem; font-weight:600; }
+
+/* preview box */
+.preview-box {
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: border-color 0.2s;
+  min-height: 42px;
+}
+.preview-box .pv-date {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.preview-box .pv-label {
+  margin-left: auto;
+  font-size: 0.68rem;
+  color: var(--muted);
+  text-align: right;
+  line-height: 1.3;
+}
+
+/* submit */
+.btn-submit {
+  width: 100%;
+  padding: 13px;
+  background: var(--green);
+  color: var(--navy);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  margin-top: 4px;
+}
+.btn-submit:hover { opacity: 0.88; }
+.btn-submit:active { transform: scale(0.98); }
+
+/* ── LIST PANEL ── */
+.tab-bar {
+  display: flex;
+  padding: 14px 16px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 3px;
+  background: linear-gradient(135deg, var(--navy-soft), var(--navy-mid));
+}
+.tab {
+  padding: 7px 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid transparent;
+  border-bottom: none;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tab .cnt {
+  background: var(--navy);
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 0.68rem;
+}
+.tab.active { color: var(--cream); background: var(--navy-mid); border-color: var(--border); }
+.tab:hover:not(.active) { color: var(--cream); }
+
+.list-ctrl {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.srch-wrap { position: relative; flex: 1; }
+.srch-wrap .si { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 13px; }
+.srch { padding: 10px 12px 10px 32px; font-size: 16px; }
+
+/* ── ITEM CARDS ── */
+.items-list { padding: 14px; display: flex; flex-direction: column; gap: 10px; max-height: calc(100vh - 220px); overflow-y: auto; }
+.items-list::-webkit-scrollbar { width: 4px; }
+.items-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.empty {
+  padding: 56px 20px; text-align: center; color: var(--muted);
+}
+.empty .ei { font-size: 2.2rem; margin-bottom: 10px; }
+.empty p { font-size: 0.85rem; }
+
+.ic {
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+  animation: si 0.2s ease;
+}
+@keyframes si { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+.ic:hover { border-color: var(--navy-soft); }
+.ic.done { opacity: 0.5; }
+
+.ic-top {
+  padding: 12px 14px 8px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.pbar {
+  width: 3px; min-height: 36px; border-radius: 2px; align-self: stretch; flex-shrink: 0;
+}
+.pb-critica { background: var(--red); }
+.pb-media   { background: var(--amber); }
+.pb-baixa   { background: var(--green); }
+
+.ic-info { flex: 1; min-width: 0; }
+.ic-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  color: var(--cream);
+}
+.ic-code {
+  font-size: 0.68rem; color: var(--muted); margin-top: 1px;
+  font-family: 'Barlow', sans-serif;
+}
+
+/* status badges */
+.sbadge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: 20px; padding: 3px 10px;
+  white-space: nowrap;
+}
+.s-manut  { background:#1a2e10; color:var(--green);  border:1px solid #2e5020; }
+.s-peca   { background:#1a1a3a; color:#7c85f7;       border:1px solid #3a3e7a; }
+.s-envio  { background:#2a1f0a; color:var(--amber);  border:1px solid #5a3c10; }
+.s-concl  { background:#0d2e20; color:var(--teal);   border:1px solid #1a5040; }
+
+/* chips */
+.ic-meta { display:flex; flex-wrap:wrap; gap:5px; padding:0 14px 7px 27px; }
+.chip {
+  border-radius: 20px;
+  padding: 3px 9px;
+  font-size: 0.67rem;
+  display: flex; align-items: center; gap: 4px;
+  border: 1px solid var(--border);
+  background: var(--navy-mid);
+  color: var(--muted);
+  font-family: 'Barlow', sans-serif;
+}
+.chip.resp   { color:var(--purple); border-color:#3d2d6b; background:#1e1730; }
+.chip.entry  { color:var(--sky);    border-color:#1e3a45; background:#0f2430; }
+.chip.qtd    { color:var(--amber);  border-color:#5a3c10; background:#2a1f0a; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:0.75rem; }
+.chip.evento { color:var(--purple); border-color:#3d2d6b; background:#1e1730; }
+
+.ic-obs {
+  padding: 0 14px 8px 27px;
+  font-size: 0.76rem; color: var(--muted); font-style: italic;
+}
+
+.ic-acts {
+  padding: 9px 12px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 7px; align-items: center;
+  background: var(--navy-mid);
+}
+.btn-a {
+  padding: 8px 13px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-family: 'Barlow', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-a:hover { background: var(--navy-soft); color: var(--cream); border-color: var(--cream); }
+.btn-done { background:#0d2e20; border-color:var(--green); color:var(--green); margin-left:auto; }
+.btn-done:hover { background:var(--green); color:var(--navy); }
+.btn-del  { color:var(--red); border-color:#3d1000; background:#1f0800; }
+.btn-del:hover { background:var(--red); color:var(--white); }
+.btn-reopen { color:var(--amber); border-color:#5a3c10; background:#2a1f0a; }
+.btn-reopen:hover { background:var(--amber); color:var(--navy); }
+
+.status-sel {
+  padding: 5px 8px;
+  font-size: 0.72rem;
+  border-radius: 6px;
+  max-width: 190px;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 22px;
+  font-size: 0.85rem;
+  display: flex; align-items: center; gap: 10px;
+  transition: transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  font-family: 'Barlow', sans-serif;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.ok   { border-color: var(--green); }
+.toast.warn { border-color: var(--amber); }
+
+/* section label */
+.field-hint { font-size: 0.68rem; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+/* ── SYNC BAR ── */
+.syncbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 24px; font-size: .72rem;
+  border-bottom: 1px solid var(--border);
+  transition: background .3s;
+}
+.syncbar.loading { background: #2a1f0a; color: var(--amber); }
+.syncbar.ok      { background: #0d1f10; color: var(--teal); }
+.syncbar.err     { background: #2a0f0f; color: var(--red); }
+.syncbar.warn    { background: #1a1a2e; color: var(--muted); }
+.spin { display:inline-block; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── EXPORT / IMPORT BUTTONS ── */
+.hdr-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: 12px;
+}
+.hdr-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--navy-soft);
+  color: var(--cream);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.hdr-btn:hover { background: var(--navy-mid); border-color: var(--green); color: var(--green); }
+.export-btn:hover { border-color: var(--sky); color: var(--sky); }
+.import-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(10,15,30,0.75);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px 28px 24px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  transform: scale(0.94);
+  transition: transform 0.2s;
+}
+.modal-overlay.open .modal { transform: scale(1); }
+.modal-icon { font-size: 2.2rem; margin-bottom: 10px; }
+.modal-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--cream); margin-bottom: 10px;
+}
+.modal-msg { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 22px; }
+.modal-msg strong { color: var(--cream); }
+.modal-actions { display: flex; flex-direction: column; gap: 8px; }
+.modal-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.15s;
+}
+.modal-btn.cancel  { background: transparent; color: var(--muted); }
+.modal-btn.cancel:hover { color: var(--cream); border-color: var(--cream); }
+.modal-btn.merge   { background: #0d2e20; color: var(--teal); border-color: var(--teal); }
+.modal-btn.merge:hover { background: var(--teal); color: var(--navy); }
+.modal-btn.replace { background: #2a1f0a; color: var(--amber); border-color: var(--amber); }
+.modal-btn.replace:hover { background: var(--amber); color: var(--navy); }
+
+@media(max-width:900px){
+  main{grid-template-columns:1fr;padding:12px;}
+  .header-kpis{display:none;}
+  .hdr-actions .hdr-btn span{display:none;}
+  .hdr-actions .hdr-btn{padding:7px 10px;}
+  .hdr{padding:0 14px;gap:12px;}
+  .logo-feeling{font-size:1.5rem;}
+  .hdr-title{font-size:0.75rem;}
+  .list-ctrl{flex-wrap:wrap;}
+  .list-ctrl select{flex:1;min-width:140px;}
+  .fbody{padding:14px;}
+  .card-hd{padding:12px 16px 10px;}
+  .tabbar{padding:10px 10px 0;gap:2px;}
+  .tab{padding:6px 10px;font-size:0.75rem;}
+  .items-list{max-height:none;padding:10px;}
+  .qty-row{gap:8px;}
+  .prio-group{gap:6px;}
+  .pbtn{padding:10px 0;font-size:0.82rem;}
+  .btn-sub{padding:15px;font-size:1.05rem;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <span class="logo-feeling">feeling</span>
+    <span class="logo-ambientes">Ambientes</span>
+  </div>
+  <div class="logo-divider"></div>
+  <span class="header-title">🔧 Controle de Manutenção</span>
+  <div class="header-kpis">
+    <div class="kpi green"><span class="n" id="kpi-open">0</span><span class="lb">Em Manut.</span></div>
+    <div class="kpi amber"><span class="n" id="kpi-envio">0</span><span class="lb">Ag. Envio</span></div>
+    <div class="kpi red"><span class="n" id="kpi-crit">0</span><span class="lb">Críticas</span></div>
+    <div class="kpi sky"><span class="n" id="kpi-done">0</span><span class="lb">Concluídas</span></div>
+  </div>
+  <div class="hdr-actions">
+    <button class="hdr-btn export-btn" onclick="exportData()" title="Baixar planilha Excel com todos os registros">
+      📊 <span>Exportar Excel</span>
+    </button>
+    <label class="hdr-btn import-btn" title="Carregar dados de outro computador">
+      ⬆️ <span>Importar</span>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+    </label>
+  </div>
+</header>
+
+<div class="syncbar" id="syncbar">
+  <span id="sync-icon"><span class="spin">⏳</span></span>
+  <span id="sync-msg">Conectando ao Google Sheets...</span>
+  <button onclick="loadFromSheets()" style="margin-left:auto;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--muted);padding:2px 10px;font-size:.7rem;cursor:pointer;font-family:'Barlow',sans-serif;">🔄 Atualizar</button>
+</div>
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-icon">⬆️</div>
+    <h3 class="modal-title">Importar dados</h3>
+    <p class="modal-msg" id="modal-msg">Foram encontrados <strong id="modal-count">0</strong> registros no arquivo.<br>O que deseja fazer?</p>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" onclick="closeModal()">Cancelar</button>
+      <button class="modal-btn merge" onclick="doImport('merge')">➕ Adicionar aos existentes</button>
+      <button class="modal-btn replace" onclick="doImport('replace')">🔄 Substituir tudo</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <!-- ── FORM ── -->
+  <div class="card">
+    <div class="card-hd"><div class="dot"></div><h2>Registrar Item para Manutenção</h2></div>
+    <div class="form-body">
+
+      <div class="field">
+        <label>Produto</label>
+        <div class="ac-wrap">
+          <input type="text" id="inp-prod" placeholder="Nome ou código do produto..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
+          <div class="ac-drop" id="ac-drop"></div>
+        </div>
+        <input type="hidden" id="h-cod">
+        <input type="hidden" id="h-cat">
+      </div>
+
+      <div class="field">
+        <label>Responsável pela Manutenção</label>
+        <select id="sel-resp">
+          <option value="">— Selecione o responsável —</option>
+          <option>Manutenção Interna</option>
+          <option>Cláudio</option>
+          <option>Valda</option>
+          <option>Orlando</option>
+          <option>Samuel</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Solicitado por</label>
+        <select id="sel-solic">
+          <option value="">— Quem solicitou —</option>
+          <option>Amanda</option>
+          <option>Andreza</option>
+          <option>Bruna</option>
+          <option>Jeanis</option>
+          <option>Larissa</option>
+          <option>Luana</option>
+          <option>Marco</option>
+          <option>Yure</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Tipo de Defeito</label>
+        <select id="sel-def">
+          <option value="">— Selecione o defeito —</option>
+          <option>Estrutura quebrada</option>
+          <option>Tecido rasgado / manchado</option>
+          <option>Pintura danificada</option>
+          <option>Peça faltando</option>
+          <option>Desgaste geral</option>
+          <option>Elétrico / Iluminação</option>
+          <option>Limpeza profunda</option>
+          <option>Outro</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Prioridade</label>
+        <div class="prio-group">
+          <button class="prio-btn critica" data-p="Crítica" onclick="setPrio(this)">🔴 Crítica</button>
+          <button class="prio-btn media"   data-p="Média"   onclick="setPrio(this)">🟡 Média</button>
+          <button class="prio-btn baixa"   data-p="Baixa"   onclick="setPrio(this)">🟢 Baixa</button>
+        </div>
+        <input type="hidden" id="h-prio">
+      </div>
+
+      <div class="field">
+        <label>Quantidade com Defeito</label>
+        <div class="qty-row">
+          <button class="qty-btn" onclick="chgQty(-1)">−</button>
+          <input type="number" id="input-qtd" value="1" min="1" max="999" inputmode="numeric" pattern="[0-9]*">
+          <button class="qty-btn" onclick="chgQty(1)">+</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Status Inicial</label>
+        <select id="sel-status">
+          <option value="Em Manutenção">🔧 Em Manutenção</option>
+          <option value="Aguardando Peça">🔩 Aguardando Peça</option>
+          <option value="Aguardando Enviar para Manutenção">📦 Aguardando Enviar para Manutenção</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Data de Entrada</label>
+        <input type="date" id="inp-data" oninput="updPreview()" style="font-size:16px">
+      </div>
+
+      <div class="field">
+        <label>Necessário para evento (opcional)</label>
+        <input type="date" id="inp-evento" oninput="updPreview()" style="font-size:16px">
+        <p class="field-hint">Se preenchido, a previsão de saída será ajustada para esta data.</p>
+      </div>
+
+      <div class="field">
+        <label>Previsão de Saída da Manutenção</label>
+        <div class="preview-box" id="prev-box">
+          <span id="prev-icon">📅</span>
+          <span id="prev-date" style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700">—</span>
+          <span id="prev-label" class="pv-label"></span>
+        </div>
+        <input type="hidden" id="h-prev">
+      </div>
+
+      <div class="field">
+        <label>Observações</label>
+        <textarea id="inp-obs" placeholder="Descreva o defeito, danos, detalhes importantes..."></textarea>
+      </div>
+
+      <button class="btn-submit" onclick="addItem()">✚ REGISTRAR ENTRADA</button>
+    </div>
+  </div>
+
+  <!-- ── LIST ── -->
+  <div class="card">
+    <div class="tab-bar">
+      <div class="tab active" onclick="setTab('open',this)">🔧 Em Manutenção <span class="cnt" id="tc-open">0</span></div>
+      <div class="tab" onclick="setTab('done',this)">✅ Concluídos <span class="cnt" id="tc-done">0</span></div>
+      <div class="tab" onclick="setTab('all',this)">📋 Todos <span class="cnt" id="tc-all">0</span></div>
+    </div>
+
+    <div class="list-ctrl">
+      <div class="srch-wrap">
+        <span class="si">🔍</span>
+        <input class="srch" id="srch" type="text" placeholder="Buscar produto, responsável..." oninput="render()">
+      </div>
+      <select id="sel-prio-flt" onchange="render()" style="width:auto;padding:7px 28px 7px 10px;font-size:0.75rem;flex-shrink:0">
+        <option value="">Todas prioridades</option>
+        <option value="Crítica">🔴 Crítica</option>
+        <option value="Média">🟡 Média</option>
+        <option value="Baixa">🟢 Baixa</option>
+      </select>
+      <select id="sel-sort" onchange="render()" style="width:auto;padding:7px 28px 7px 10px;font-size:0.75rem;flex-shrink:0">
+        <option value="prio-data">↑ Prioridade + Prazo</option>
+        <option value="data-asc">📅 Prazo mais próximo</option>
+        <option value="data-desc">📅 Prazo mais distante</option>
+        <option value="entrada-desc">🆕 Entrada mais recente</option>
+        <option value="entrada-asc">🕐 Entrada mais antiga</option>
+      </select>
+    </div>
+
+    <div class="items-list" id="list"></div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CATALOG ──────────────────────────────────────────────────────
+const CATALOG = [{"codigo": "343", "nome": "01 Jardineira para palco 2,00m", "categoria": "Outros"}, {"codigo": "240", "nome": "Abajur", "categoria": "Luminárias"}, {"codigo": "599", "nome": "Abajur de Bambu Bivolt", "categoria": "Luminárias"}, {"codigo": "604", "nome": "Abajur Rústico Branco", "categoria": "Luminárias"}, {"codigo": "606", "nome": "Abajur Rústico Bronze", "categoria": "Luminárias"}, {"codigo": "121238", "nome": "Almofadas coloridas", "categoria": "almofadas"}, {"codigo": "239", "nome": "Ambientação", "categoria": "SERVIÇOS"}, {"codigo": "919900", "nome": "Aparador alto", "categoria": "Madeira de demolição"}, {"codigo": "639", "nome": "Aparador Alto de Demolição CLaro", "categoria": "Balcão"}, {"codigo": "135", "nome": "Aparador alto MDF", "categoria": "Mesas"}, {"codigo": "111", "nome": "Aparador em madeira de demolição 1,5m", "categoria": "Madeira de demolição"}, {"codigo": "112", "nome": "Aparador em madeira de demolição 2m", "categoria": "Madeira de demolição"}, {"codigo": "508304", "nome": "Aparador Rústico com Gavetas", "categoria": "Madeira de demolição"}, {"codigo": "226", "nome": "Ar condicionado portátil", "categoria": "objetos"}, {"codigo": "616", "nome": "Arara Regulável", "categoria": "araras"}, {"codigo": "858177", "nome": "Arara dupla regulável com sapateira", "categoria": "araras"}, {"codigo": "324961", "nome": "Arara simples regulável", "categoria": "araras"}, {"codigo": "484", "nome": "Armário de ferro - 2 portas", "categoria": "Outros"}, {"codigo": "466", "nome": "Arranjo de chão", "categoria": "arranjo"}, {"codigo": "320", "nome": "Arranjo de flor grande para mesa", "categoria": "arranjo"}, {"codigo": "321", "nome": "Arranjo de flor médio para mesa", "categoria": "arranjo"}, {"codigo": "322", "nome": "Arranjo de flor pequeno para mesa", "categoria": "arranjo"}, {"codigo": "218", "nome": "Arranjo de flores", "categoria": "arranjo"}, {"codigo": "323", "nome": "Arranjo de flores tipo jardineira", "categoria": "arranjo"}, {"codigo": "470", "nome": "Arranjo de impacto", "categoria": "arranjo"}, {"codigo": "471", "nome": "Arranjos de buffet", "categoria": "arranjo"}, {"codigo": "469", "nome": "Arranjos de composição.", "categoria": "arranjo"}, {"codigo": "413", "nome": "Assento bertoia branco", "categoria": "Banquetas"}, {"codigo": "414", "nome": "Assento bertoia preto", "categoria": "Banquetas"}, {"codigo": "107", "nome": "Assento cadeira arrow", "categoria": "Cadeiras"}, {"codigo": "536", "nome": "Assentos de Montanas", "categoria": "Cadeiras"}, {"codigo": "510", "nome": "Balcão Curvo LED", "categoria": "Moveis De LED"}, {"codigo": "509", "nome": "Balcão de Bar Clássico Verde (Desmontável 6 Partes)", "categoria": "Balcão"}, {"codigo": "476", "nome": "Balcão/Bar de madeira rústica", "categoria": "Balcão"}, {"codigo": "538", "nome": "Balcão/Bar de madeira rústica (Desmontável 3 Partes Claro Liso)", "categoria": "Balcão"}, {"codigo": "508", "nome": "Balcão/Bar de Madeira Rústica (Desmontável 3 Partes)", "categoria": "Balcão"}, {"codigo": "597", "nome": "Balcão/Bar de madeira rústica 180 cm (Desmontável 3 Partes)", "categoria": "Balcão"}, {"codigo": "561", "nome": "Banco de Madeira Circular", "categoria": "Madeira de demolição"}, {"codigo": "232376", "nome": "Banco de madeira com encosto em x", "categoria": "Madeira de demolição"}, {"codigo": "400", "nome": "Banco de madeira com encosto reto", "categoria": "Madeira de demolição"}, {"codigo": "547", "nome": "Banco de madeira de demolição de 3 lugares\t(claro)", "categoria": "Madeira de demolição"}, {"codigo": "504373", "nome": "Banco de madeira de demolição de 3 lugares", "categoria": "Madeira de demolição"}, {"codigo": "284972", "nome": "Banco de madeira ripado com braço", "categoria": "Madeira de demolição"}, {"codigo": "494", "nome": "Banco de Madeira Ripado Reto", "categoria": "Madeira de demolição"}, {"codigo": "644", "nome": "Banco de Madeira Ripado Reto Claro", "categoria": "Madeira de demolição"}, {"codigo": "788787", "nome": "Banco de metalon com encosto", "categoria": "Banco De metalon"}, {"codigo": "824157", "nome": "Banco de metalon sem encosto", "categoria": "Banco De metalon"}, {"codigo": "493", "nome": "Banco surubão", "categoria": "Madeira de demolição"}, {"codigo": "313", "nome": "Bangalô", "categoria": "Outros"}, {"codigo": "566", "nome": "Banqueta Barcelona", "categoria": "Banquetas"}, {"codigo": "719", "nome": "Banqueta Berlim em Madeira", "categoria": "Banquetas"}, {"codigo": "314", "nome": "Banqueta Bertoia", "categoria": "Banquetas"}, {"codigo": "637", "nome": "Banqueta de Corda Náutica", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "126", "nome": "Banqueta de Demolicao", "categoria": "Banquetas"}, {"codigo": "570", "nome": "Banqueta de Demolição Clara", "categoria": "Banquetas"}, {"codigo": "792487", "nome": "Banqueta de fibra", "categoria": "Banquetas"}, {"codigo": "444288", "nome": "Banqueta de madeira de demolição", "categoria": "Banquetas"}, {"codigo": "947482", "nome": "Banqueta de metalon", "categoria": "Banquetas"}, {"codigo": "661", "nome": "Banqueta de metalon Clara", "categoria": "Banquetas"}, {"codigo": "404", "nome": "Banqueta Diamante cromada", "categoria": "Banquetas"}, {"codigo": "401", "nome": "Banqueta Diamante preta", "categoria": "Banquetas"}, {"codigo": "532", "nome": "Banqueta fasano", "categoria": "Banquetas"}, {"codigo": "498", "nome": "Banqueta LED", "categoria": "Moveis De LED"}, {"codigo": "213", "nome": "Banqueta Lis", "categoria": "Banquetas"}, {"codigo": "182900", "nome": "Banqueta madeira dobrável", "categoria": "Banquetas"}, {"codigo": "567", "nome": "Banqueta Mônaco", "categoria": "Banquetas"}, {"codigo": "389", "nome": "Banqueta Montana", "categoria": "Banquetas"}, {"codigo": "672", "nome": "Banqueta Moscou", "categoria": "Banquetas"}, {"codigo": "467865", "nome": "Banqueta Notch Branca", "categoria": "Banquetas"}, {"codigo": "475", "nome": "Banqueta Notch Verde", "categoria": "Banquetas"}, {"codigo": "324322", "nome": "Banqueta regg", "categoria": "Banquetas"}, {"codigo": "647900", "nome": "Banqueta torino", "categoria": "Banquetas"}, {"codigo": "415", "nome": "Banqueta tropical em madeira", "categoria": "Banquetas"}, {"codigo": "104", "nome": "Base arrow", "categoria": "Bases De Mesa"}, {"codigo": "214", "nome": "Base Bistrô Baixa Encaixável Cromada", "categoria": "Base De Bistrô"}, {"codigo": "12543", "nome": "Base Bistrô Encaixável Cromada", "categoria": "Base De Bistrô"}, {"codigo": "348", "nome": "Base Bistro Retangular", "categoria": "Base De Bistrô"}, {"codigo": "1250", "nome": "Base cromada bistrô torre", "categoria": "Base De Bistrô"}, {"codigo": "109", "nome": "Base cromada mesa torre", "categoria": "Bases De Mesa"}, {"codigo": "1246", "nome": "Base de Bistro Catedral (redonda cromada) Grande", "categoria": "Base De Bistrô"}, {"codigo": "660", "nome": "Base de Bistro Catedral (redonda cromada) Pequeno", "categoria": "Base De Bistrô"}, {"codigo": "1249", "nome": "Base de bistrô de fibra", "categoria": "Base De Bistrô"}, {"codigo": "387", "nome": "Base de mesa de corda náutica", "categoria": "Bases De Mesa"}, {"codigo": "713", "nome": "Base de Mesa em X De Madeira", "categoria": "Bases De Mesa"}, {"codigo": "386", "nome": "Base de mesa Igrejinha", "categoria": "Bases De Mesa"}, {"codigo": "196", "nome": "Base de mesa T em pinos", "categoria": "Bases De Mesa"}, {"codigo": "339", "nome": "Base de mesa torre preta", "categoria": "Bases De Mesa"}, {"codigo": "658", "nome": "Base de mesa X em metalon Grande", "categoria": "Bases De Mesa"}, {"codigo": "197", "nome": "Base de mesa X em metalon Medio", "categoria": "Bases De Mesa"}, {"codigo": "657", "nome": "Base de mesa X em metalon Pequeno com Orelhas Pra Dentro", "categoria": "Bases De Mesa"}, {"codigo": "656", "nome": "Base de mesa X em metalon Pequeno com Orelhas Pra Fora", "categoria": "Bases De Mesa"}, {"codigo": "1245", "nome": "Base de metalon bistrô/ mesa de centro em X", "categoria": "Base De Bistrô"}, {"codigo": "659", "nome": "Base de metalon bistrô/ mesa de centro em X Novo", "categoria": "Base De Bistrô"}, {"codigo": "1234", "nome": "Base de metalon bistrô/ mesa de centro quadrada", "categoria": "Base De Bistrô"}, {"codigo": "121", "nome": "Base em madeira quadrada", "categoria": "Bases De Mesa"}, {"codigo": "203", "nome": "Base em metalon L Grande 60 CM", "categoria": "Bases De Mesa"}, {"codigo": "204", "nome": "Base em metalon L Medio 55cm", "categoria": "Bases De Mesa"}, {"codigo": "205", "nome": "Base em metalon L Pequeno 50 cm", "categoria": "Bases De Mesa"}, {"codigo": "122", "nome": "Base mesa catedral", "categoria": "Bases De Mesa"}, {"codigo": "492", "nome": "Base ripada de ferro meia lua", "categoria": "Bases De Mesa"}, {"codigo": "491", "nome": "Base ripada de ferro quadrado", "categoria": "Bases De Mesa"}, {"codigo": "99", "nome": "Base único para mesa preto", "categoria": "Bases De Mesa"}, {"codigo": "356", "nome": "Bicicleta de enfeite", "categoria": "enfeite"}, {"codigo": "613700", "nome": "Biombo", "categoria": "Outros"}, {"codigo": "124", "nome": "Bistrô de Demolição Quadrado", "categoria": "Bistrôs"}, {"codigo": "571", "nome": "Bistrô de Demolição Quadrado Claro", "categoria": "Bistrôs"}, {"codigo": "125", "nome": "Bistrô de Demolição Redondo", "categoria": "Bistrôs"}, {"codigo": "572", "nome": "Bistrô de Demolição Redondo Claro", "categoria": "Bistrôs"}, {"codigo": "121308", "nome": "Bistro de madeira dobrável", "categoria": "Bistrôs"}, {"codigo": "403", "nome": "Bistro diamante cromado", "categoria": "Bistrôs"}, {"codigo": "402", "nome": "Bistro Diamante Preto", "categoria": "Bistrôs"}, {"codigo": "431", "nome": "Bistrô JK", "categoria": "Bistrôs"}, {"codigo": "504", "nome": "Bistrô LED", "categoria": "Moveis De LED"}, {"codigo": "870794", "nome": "Bistrô Madeira de demolição quadrado", "categoria": "Bistrôs"}, {"codigo": "458815", "nome": "Bistrô Madeira de demolição redondo", "categoria": "Bistrôs"}, {"codigo": "673", "nome": "Bistrô Pirineus", "categoria": "Bistrôs"}, {"codigo": "674", "nome": "Bistrô Roma", "categoria": "Bistrôs"}, {"codigo": "747", "nome": "Bistro Saarinen Branco", "categoria": "Bistrôs"}, {"codigo": "746", "nome": "Bistro Saarinen Preto", "categoria": "Bistrôs"}, {"codigo": "443", "nome": "Bistrô Tesourinha", "categoria": "Bistrôs"}, {"codigo": "544", "nome": "Bistrô vibes", "categoria": "Bistrôs"}, {"codigo": "707", "nome": "Bistrô Vibes Marrom", "categoria": "Bistrôs"}, {"codigo": "324", "nome": "Bouquet de flores", "categoria": "arranjo"}, {"codigo": "535", "nome": "Cabeça de carregador LED", "categoria": "Moveis De LED"}, {"codigo": "352", "nome": "Cabide", "categoria": "Outros"}, {"codigo": "534", "nome": "Cabo do carregador do LED", "categoria": "Moveis De LED"}, {"codigo": "588", "nome": "Cachepô Branco Grande", "categoria": "Cachepô"}, {"codigo": "664", "nome": "Cachepo Cinza Grande Rendodo Riscado", "categoria": "Cachepô"}, {"codigo": "595", "nome": "Cachepo Cone Baixo Liso Azul Médio", "categoria": "Cachepô"}, {"codigo": "596", "nome": "Cachepo Cone Baixo liso Médio Preto", "categoria": "Cachepô"}, {"codigo": "665", "nome": "Cachepo Cosmo Cinza Grande/Medio", "categoria": "Cachepô"}, {"codigo": "530", "nome": "Cachepo de Madeira Quadrado sem Rodinha", "categoria": "Cachepô"}, {"codigo": "531", "nome": "Cachepo de Madeira Retangular para Arranjos", "categoria": "Cachepô"}, {"codigo": "590", "nome": "Cachepo Marmorizada Azul Grande", "categoria": "Cachepô"}, {"codigo": "594", "nome": "Cachepo Preto Cone Baixo Riscato Médio", "categoria": "Cachepô"}, {"codigo": "589", "nome": "Cachepo Preto Grande", "categoria": "Cachepô"}, {"codigo": "516", "nome": "Cachepo Quadrado de Fibra Médio", "categoria": "Cachepô"}, {"codigo": "529", "nome": "Cachepo Quadrado de Madeira com Rodinha", "categoria": "Cachepô"}, {"codigo": "724", "nome": "Cachepo Quadrado de Plástico Grande Cinza", "categoria": "Cachepô"}, {"codigo": "723", "nome": "Cachepo Quadrado de Plástico Grande Cinza escuro", "categoria": "Cachepô"}, {"codigo": "520", "nome": "Cachepo Quadrado de Plástico Pequeno Cinza", "categoria": "Cachepô"}, {"codigo": "722", "nome": "Cachepo Quadrado de Plástico Pequeno Cinza escuro", "categoria": "Cachepô"}, {"codigo": "521", "nome": "Cachepo Quadrado Marrom Frutifera Médio", "categoria": "Cachepô"}, {"codigo": "517", "nome": "Cachepo Quadrado Preto Frutifera Médio", "categoria": "Cachepô"}, {"codigo": "519", "nome": "Cachepo Quadrado Preto Frutifera Pequeno", "categoria": "Cachepô"}, {"codigo": "524", "nome": "Cachepo redondo Cinza, tipo revestimento Grande", "categoria": "Cachepô"}, {"codigo": "513", "nome": "Cachepo Redondo de Palha Grande", "categoria": "Cachepô"}, {"codigo": "514", "nome": "Cachepo Redondo de Palha Médio", "categoria": "Cachepô"}, {"codigo": "515", "nome": "Cachepo Redondo de Palha Pequeno", "categoria": "Cachepô"}, {"codigo": "528", "nome": "Cachepo Redondo de Plástico Frizado Bege Medio", "categoria": "Cachepô"}, {"codigo": "527", "nome": "Cachepo Redondo de Plástico Frizado Cinza Médio", "categoria": "Cachepô"}, {"codigo": "526", "nome": "Cachepo Redondo de Plástico Frizado Marron Médio", "categoria": "Cachepô"}, {"codigo": "523", "nome": "Cachepo Redondo Marron Frutifera Grande", "categoria": "Cachepô"}, {"codigo": "537", "nome": "Cachepo redondo Preto, tipo revestimento Grande", "categoria": "Cachepô"}, {"codigo": "522", "nome": "Cachepo Redondo tipo mármore polido bege extra Grande", "categoria": "Cachepô"}, {"codigo": "460274", "nome": "Cadeira acolchoada dobravel", "categoria": "Cadeiras"}, {"codigo": "763", "nome": "Cadeira Barcelona Amarela", "categoria": "Cadeiras"}, {"codigo": "636", "nome": "Cadeira Barcelona Assento em Madeira", "categoria": "Cadeiras"}, {"codigo": "335", "nome": "Cadeira Barcelona Assento em Sisal", "categoria": "Cadeiras"}, {"codigo": "762", "nome": "Cadeira Barcelona Azul", "categoria": "Cadeiras"}, {"codigo": "759", "nome": "Cadeira Barcelona Vemelha", "categoria": "Cadeiras"}, {"codigo": "760", "nome": "Cadeira Barcelona Verde", "categoria": "Cadeiras"}, {"codigo": "718", "nome": "Cadeira Berlim de corda náutica", "categoria": "Cadeiras"}, {"codigo": "687", "nome": "Cadeira Corda Náutica Areia", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "626", "nome": "Cadeira Corda Náutica Azul", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "627", "nome": "Cadeira Corda Náutica Verde Musgo", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "313287", "nome": "Cadeira de boteco", "categoria": "Cadeiras"}, {"codigo": "693", "nome": "Cadeira de Boteco Parceiro", "categoria": "Cadeiras"}, {"codigo": "433", "nome": "Cadeira de escritório giratória", "categoria": "Cadeiras"}, {"codigo": "381", "nome": "Cadeira de praia azul", "categoria": "Cadeiras"}, {"codigo": "379", "nome": "Cadeira de praia Preta", "categoria": "Cadeiras"}, {"codigo": "380", "nome": "Cadeira de praia verde", "categoria": "Cadeiras"}, {"codigo": "382", "nome": "Cadeira Dior Cristal", "categoria": "Cadeiras"}, {"codigo": "667", "nome": "Cadeira Dior De Madeira", "categoria": "Cadeiras"}, {"codigo": "765", "nome": "Cadeira Dior Preta", "categoria": "Cadeiras"}, {"codigo": "336", "nome": "Cadeira Dior Resina", "categoria": "Cadeiras"}, {"codigo": "825468", "nome": "Cadeira dobravel ferro cinza", "categoria": "Cadeiras"}, {"codigo": "467346", "nome": "Cadeira espaldar alto", "categoria": "Cadeiras"}, {"codigo": "565", "nome": "Cadeira espaldar alto", "categoria": "Cadeiras"}, {"codigo": "977415", "nome": "Cadeira fixa acolchoada", "categoria": "Cadeiras"}, {"codigo": "553", "nome": "Cadeira fixa acolchoada (Parceiro)", "categoria": "Cadeiras"}, {"codigo": "202", "nome": "Cadeira Makeup", "categoria": "Cadeiras"}, {"codigo": "349", "nome": "Cadeira Montana com Assento em Madeira", "categoria": "Cadeiras"}, {"codigo": "398", "nome": "Cadeira Montana com assento em Sisal", "categoria": "Cadeiras"}, {"codigo": "976705", "nome": "Cadeira notch", "categoria": "Cadeiras"}, {"codigo": "472", "nome": "Cadeira office", "categoria": "Cadeiras"}, {"codigo": "332", "nome": "Cadeira Preta", "categoria": "Cadeiras"}, {"codigo": "766", "nome": "Cadeira Tiffany Branca", "categoria": "Cadeiras"}, {"codigo": "647878", "nome": "Cadeira Tiffany imbuia", "categoria": "Cadeiras"}, {"codigo": "721", "nome": "Cadeira Tokio", "categoria": "Cadeiras"}, {"codigo": "628433", "nome": "Cadeiras de plástico", "categoria": "Cadeiras"}, {"codigo": "163", "nome": "Caixote Madeira", "categoria": "Outros"}, {"codigo": "273", "nome": "Capa Almofada - Roxa", "categoria": "Capa"}, {"codigo": "271", "nome": "Capa Almofada Amarela", "categoria": "Capa"}, {"codigo": "284", "nome": "Capa Almofada Bege Veludo", "categoria": "Capa"}, {"codigo": "290", "nome": "Capa Almofada Lilás Florida", "categoria": "Capa"}, {"codigo": "289", "nome": "Capa Almofada Preta Florida", "categoria": "Capa"}, {"codigo": "270", "nome": "Capa Almofada - Rosa", "categoria": "Capa"}, {"codigo": "267", "nome": "Capa Almofada Azul", "categoria": "Capa"}, {"codigo": "279", "nome": "Capa Almofada Bege", "categoria": "Capa"}, {"codigo": "298", "nome": "Capa Almofada Bege Listrada", "categoria": "Capa"}, {"codigo": "280", "nome": "Capa Almofada Cilindro Branco Cinza", "categoria": "Capa"}, {"codigo": "373", "nome": "Capa Almofada Colorida", "categoria": "Capa"}, {"codigo": "269", "nome": "Capa Almofada Florida", "categoria": "Capa"}, {"codigo": "275", "nome": "Capa Almofada Laranja", "categoria": "Capa"}, {"codigo": "286", "nome": "Capa Almofada Lilás", "categoria": "Capa"}, {"codigo": "288", "nome": "Capa Almofada Marrom Veludo", "categoria": "Capa"}, {"codigo": "277", "nome": "Capa Almofada Preta", "categoria": "Capa"}, {"codigo": "287", "nome": "Capa Almofada Roxa", "categoria": "Capa"}, {"codigo": "276", "nome": "Capa Almofada Verde", "categoria": "Capa"}, {"codigo": "283", "nome": "Capa Almofada Vermelha", "categoria": "Capa"}, {"codigo": "285", "nome": "Capa Almofada- Bege", "categoria": "Capa"}, {"codigo": "445", "nome": "Capa Banqueta/Cadeira Notch - Veludo Preto", "categoria": "Capa"}, {"codigo": "262", "nome": "Capa Banqueta/Cadeira Notch Azul Bebê", "categoria": "Capa"}, {"codigo": "198", "nome": "Capa Banqueta/Cadeira Notch Azul", "categoria": "Capa"}, {"codigo": "263", "nome": "Capa Banqueta/Cadeira Notch Laranja", "categoria": "Capa"}, {"codigo": "1251", "nome": "Capa Banqueta/Cadeira Notch Preta", "categoria": "Capa"}, {"codigo": "265", "nome": "Capa Banqueta/Cadeira Notch Rosa", "categoria": "Capa"}, {"codigo": "261", "nome": "Capa Banqueta/Cadeira Notch Verde", "categoria": "Capa"}, {"codigo": "695", "nome": "Capa de almofada Amarela pequena", "categoria": "Capa"}, {"codigo": "699", "nome": "Capa de Almofada Azul Pequeno", "categoria": "Capa"}, {"codigo": "698", "nome": "Capa de Almofada Bege", "categoria": "Capa"}, {"codigo": "697", "nome": "Capa de Almofada Terracota Pequeno", "categoria": "Capa"}, {"codigo": "696", "nome": "Capa de Almofada Verde Pequeno", "categoria": "Capa"}, {"codigo": "611", "nome": "Capa de Anita marrom", "categoria": "Capa"}, {"codigo": "300", "nome": "Capa de Cadeira Bege Com Cordinha", "categoria": "Capa"}, {"codigo": "575", "nome": "Capa De Cadeira Bege Com Velcro", "categoria": "Capa"}, {"codigo": "643", "nome": "Capa de Cadeira Cinza", "categoria": "Capa"}, {"codigo": "668", "nome": "Capa de Cadeira Creme", "categoria": "Capa"}, {"codigo": "609", "nome": "Capa De Cadeira Preta", "categoria": "Capa"}, {"codigo": "302", "nome": "Capa De Cadeira Verde", "categoria": "Capa"}, {"codigo": "301", "nome": "Capa De Cadeira Verde Veludo", "categoria": "Capa"}, {"codigo": "407", "nome": "Capa de Poltrona Anita Verde", "categoria": "Capa"}, {"codigo": "700", "nome": "Capa de Poltrona Anita Azul", "categoria": "Capa"}, {"codigo": "701", "nome": "Capa de Poltrona Anita Bege", "categoria": "Capa"}, {"codigo": "702", "nome": "Capa de Poltrona Anita Cinza", "categoria": "Capa"}, {"codigo": "455", "nome": "Capa de Poltrona Anita Preto Veludo", "categoria": "Capa"}, {"codigo": "456", "nome": "Capa de Poltrona Anita Rosa", "categoria": "Capa"}, {"codigo": "423", "nome": "Capa de Poltrona Anita Terracota", "categoria": "Capa"}, {"codigo": "577", "nome": "Capa de Puff retangular Laranja", "categoria": "Capa"}, {"codigo": "576", "nome": "Capa de Puff 40X40 Amarelo Camurça", "categoria": "Capa"}, {"codigo": "579", "nome": "Capa de Puff Quadrado Grande", "categoria": "Capa"}, {"codigo": "580", "nome": "Capa de Puff Quadrado Grande", "categoria": "Capa"}, {"codigo": "610", "nome": "Capa de puff Quadrado pequeno camurça verde", "categoria": "Capa"}, {"codigo": "453", "nome": "Capa de puff redondo rosa", "categoria": "Capa"}, {"codigo": "454", "nome": "Capa de Puff Redondo Azul", "categoria": "Capa"}, {"codigo": "578", "nome": "Capa de Puff Redondo Grande", "categoria": "Capa"}, {"codigo": "452", "nome": "Capa de Puff Retangular Amarelo", "categoria": "Capa"}, {"codigo": "449", "nome": "Capa de Puff Retangular Terracota", "categoria": "Capa"}, {"codigo": "451", "nome": "Capa de Puff Retangular Verde", "categoria": "Capa"}, {"codigo": "444", "nome": "Capa de Puff Veludo Preto", "categoria": "Capa"}, {"codigo": "488", "nome": "Capa de Sofa Retangular com Encosto Terracota ( direito)", "categoria": "Capa"}, {"codigo": "422", "nome": "Capa de Sofa Retangular com Encosto Terracota (Lado Esquerdo)", "categoria": "Capa"}, {"codigo": "649", "nome": "Capa de Sofa 3 Lugares Com braço Verde", "categoria": "Capa"}, {"codigo": "647", "nome": "Capa de Sofa modular 2 lugares Couro Marron", "categoria": "Capa"}, {"codigo": "648", "nome": "Capa de Sofa Modular Verde 3 lugares", "categoria": "Capa"}, {"codigo": "427", "nome": "Capa de Sofa Retangular com Encosto Verde Musgo (Lado Esquerdo)", "categoria": "Capa"}, {"codigo": "458", "nome": "Capa de Sofa Retangular Com Encosto Bege ( lado direito)", "categoria": "Capa"}, {"codigo": "489", "nome": "Capa de Sofa Retangular com Encosto Marrom ( Direito)", "categoria": "Capa"}, {"codigo": "429", "nome": "Capa de Sofa Retangular com Encosto Marrom (Lado Esquerdo)", "categoria": "Capa"}, {"codigo": "487", "nome": "Capa de Sofa Retangular Com Encosto Verde (Direito)", "categoria": "Capa"}, {"codigo": "462", "nome": "Capa Diamante Azul", "categoria": "Capa"}, {"codigo": "459", "nome": "Capa Diamante Marrom", "categoria": "Capa"}, {"codigo": "463", "nome": "Capa Diamante Vermelho", "categoria": "Capa"}, {"codigo": "726", "nome": "Capa diamante Amarelo", "categoria": "Capa"}, {"codigo": "461", "nome": "Capa Diamante Preto", "categoria": "Capa"}, {"codigo": "460", "nome": "Capa Diamante Preto Veludo", "categoria": "Capa"}, {"codigo": "365", "nome": "Capa poltrona EGG Onça", "categoria": "Capa"}, {"codigo": "364", "nome": "Capa Poltrona Egg Zebra", "categoria": "Capa"}, {"codigo": "254", "nome": "Capa puff 40x40 Azul Bebê", "categoria": "Capa"}, {"codigo": "257", "nome": "Capa Puff 40x40 Branco", "categoria": "Capa"}, {"codigo": "241", "nome": "Capa Puff 40x40 Laranja", "categoria": "Capa"}, {"codigo": "248", "nome": "Capa Puff Amarelo", "categoria": "Capa"}, {"codigo": "446", "nome": "Capa puff Meia Lua Bege Veludo", "categoria": "Capa"}, {"codigo": "367", "nome": "Capa Puff Retangular Colorida", "categoria": "Capa"}, {"codigo": "243", "nome": "Capa Puff Rosa Bebe", "categoria": "Capa"}, {"codigo": "242", "nome": "Capa puff Roxo", "categoria": "Capa"}, {"codigo": "397", "nome": "Capa Puff Vermelha", "categoria": "Capa"}, {"codigo": "255", "nome": "Capa Puff Azul", "categoria": "Capa"}, {"codigo": "251", "nome": "Capa Puff Centro de Lua Azul", "categoria": "Capa"}, {"codigo": "246", "nome": "Capa Puff Centro de Lua Laranja", "categoria": "Capa"}, {"codigo": "258", "nome": "Capa Puff Centro de Lua Vermelho", "categoria": "Capa"}, {"codigo": "245", "nome": "Capa puff Desenhada Roxa/Preta", "categoria": "Capa"}, {"codigo": "363", "nome": "Capa Puff Meia Lua Zebra", "categoria": "Capa"}, {"codigo": "260", "nome": "Capa Puff Meia Lua - Amarelo", "categoria": "Capa"}, {"codigo": "259", "nome": "Capa Puff Meia Lua Amarelo camurça", "categoria": "Capa"}, {"codigo": "249", "nome": "Capa Puff meia Lua Azul", "categoria": "Capa"}, {"codigo": "268", "nome": "Capa Puff Meia Lua Azul Escuro", "categoria": "Capa"}, {"codigo": "244", "nome": "Capa Puff Meia Lua Laranja", "categoria": "Capa"}, {"codigo": "362", "nome": "Capa Puff Meia Lua Onça", "categoria": "Capa"}, {"codigo": "264", "nome": "Capa Puff Meia Lua Preto", "categoria": "Capa"}, {"codigo": "266", "nome": "Capa Puff Meia Lua Rosa", "categoria": "Capa"}, {"codigo": "424", "nome": "Capa Puff Meia Lua Terracota", "categoria": "Capa"}, {"codigo": "253", "nome": "Capa PUff meia Lua Vermelha", "categoria": "Capa"}, {"codigo": "250", "nome": "Capa Puff Preto", "categoria": "Capa"}, {"codigo": "274", "nome": "Capa Puff Quadrado Azul Bebe 1x1", "categoria": "Capa"}, {"codigo": "292", "nome": "Capa Puff Quadrado Azul Escuro 1x1", "categoria": "Capa"}, {"codigo": "281", "nome": "Capa Puff Quadrado Laranja 1x1", "categoria": "Capa"}, {"codigo": "278", "nome": "Capa Puff Quadrado Preta Florido 1x1", "categoria": "Capa"}, {"codigo": "296", "nome": "Capa puff quadrado Rosa 1X1", "categoria": "Capa"}, {"codigo": "256", "nome": "Capa Puff Retangular Amarela camurça", "categoria": "Capa"}, {"codigo": "293", "nome": "Capa Puff Retangular Azul", "categoria": "Capa"}, {"codigo": "291", "nome": "Capa Puff Retangular Azul Escuro", "categoria": "Capa"}, {"codigo": "297", "nome": "Capa Puff Retangular Bege", "categoria": "Capa"}, {"codigo": "448", "nome": "Capa Puff Retangular Bege Veludo", "categoria": "Capa"}, {"codigo": "368", "nome": "Capa Puff Retangular Branca Com Listras Pretas", "categoria": "Capa"}, {"codigo": "295", "nome": "Capa Puff Retangular Rosa", "categoria": "Capa"}, {"codigo": "247", "nome": "Capa Puff Rosa", "categoria": "Capa"}, {"codigo": "392", "nome": "Capa Puff Verde", "categoria": "Capa"}, {"codigo": "361", "nome": "Capa Sofá Arredondado 3 lugares Onça", "categoria": "Capa"}, {"codigo": "371", "nome": "Capa Sofá Modular 2 Lugares Preta", "categoria": "Capa"}, {"codigo": "369", "nome": "Capa Sofa Modular 2 Lugares Preto com Lista Branca", "categoria": "Capa"}, {"codigo": "372", "nome": "Capa Sofá Modular 3 Lugares Preta", "categoria": "Capa"}, {"codigo": "457", "nome": "Capa Sofá Mônaco Bege", "categoria": "Capa"}, {"codigo": "430", "nome": "Capa Sofá Mônaco Marrom", "categoria": "Capa"}, {"codigo": "426", "nome": "Capa Sofá Mônaco Terracota", "categoria": "Capa"}, {"codigo": "428", "nome": "Capa Sofá Mônaco Verde Musgo", "categoria": "Capa"}, {"codigo": "360", "nome": "Capa Zebra Sofá Arredondado 3 Lugares", "categoria": "Capa"}, {"codigo": "164", "nome": "Carpete", "categoria": "Tapete"}, {"codigo": "192", "nome": "Carpete vermelho 4x3m", "categoria": "Tapete"}, {"codigo": "227", "nome": "Carrinho de chá cromada", "categoria": "carrinho"}, {"codigo": "354", "nome": "Carrinho de enfeite", "categoria": "enfeite"}, {"codigo": "482", "nome": "Carrinho expositor 0,70m de largura 1,50 m cumprimento 1,93 de altura", "categoria": "carrinho"}, {"codigo": "129", "nome": "Champanheira de chão", "categoria": "champanheira"}, {"codigo": "465", "nome": "Champanheira de inox de mesa", "categoria": "champanheira"}, {"codigo": "405", "nome": "Champanheira preta", "categoria": "champanheira"}, {"codigo": "714", "nome": "Climatizador de Ar Joape Cassino 80 Litros Pedestal Cinza - 220V", "categoria": "Outros"}, {"codigo": "338", "nome": "Cobre mancha Azul marinho", "categoria": "tecido"}, {"codigo": "137", "nome": "Coluna de balão 3m (8 colunas)", "categoria": "enfeite"}, {"codigo": "359", "nome": "Comoda", "categoria": "Outros"}, {"codigo": "749", "nome": "Conjunto Maldivas", "categoria": "Sofás"}, {"codigo": "485", "nome": "Conjunto de Mesa de Centro Orgânica Nogueira", "categoria": "Mesa De Centro"}, {"codigo": "755", "nome": "Conjuto de Mesa Ripado Alta", "categoria": "Mesas"}, {"codigo": "756", "nome": "Conjuto de Mesa Ripado Baixa", "categoria": "Mesas"}, {"codigo": "533", "nome": "controle LED", "categoria": "Moveis De LED"}, {"codigo": "689507", "nome": "Cooler Bistrô 30 l", "categoria": "geladeiras"}, {"codigo": "297690", "nome": "Cooler grande 120l", "categoria": "geladeiras"}, {"codigo": "913092", "nome": "Cooler medio- 57l", "categoria": "geladeiras"}, {"codigo": "468", "nome": "Cortina Preta", "categoria": "tecido"}, {"codigo": "429505", "nome": "Cristaleira", "categoria": "Geral"}, {"codigo": "774742", "nome": "Cubo modular MDF", "categoria": "Geral"}, {"codigo": "355", "nome": "Espantalho", "categoria": "enfeite"}, {"codigo": "560", "nome": "Espelho de Camarim", "categoria": "espelhos"}, {"codigo": "678130", "nome": "Espelho de camarim MDF Branco", "categoria": "espelhos"}, {"codigo": "404306", "nome": "Espelho de camarim MDF Nogueira", "categoria": "espelhos"}, {"codigo": "727", "nome": "Espelho de Camarim Oval", "categoria": "espelhos"}, {"codigo": "553481", "nome": "Espelho grande", "categoria": "espelhos"}, {"codigo": "564", "nome": "Espelho orgânico dourado 1,70m", "categoria": "espelhos"}, {"codigo": "563", "nome": "Espelho orgânico marrom 1,70m", "categoria": "espelhos"}, {"codigo": "671", "nome": "Espelho Oval Com Base Reta Bronze", "categoria": "espelhos"}, {"codigo": "670", "nome": "Espelho Oval Com Base Reta Marrom", "categoria": "espelhos"}, {"codigo": "688", "nome": "Espelho Oval Com Base Reta Preto", "categoria": "espelhos"}, {"codigo": "478", "nome": "Espelho pequeno", "categoria": "espelhos"}, {"codigo": "378", "nome": "Esteira", "categoria": "Outros"}, {"codigo": "141", "nome": "Fogão industrial 3 bocas", "categoria": "Outros"}, {"codigo": "987594", "nome": "Freezer Comprimento: 65cm Altura: 95cm Largura 65cm", "categoria": "geladeiras"}, {"codigo": "359340", "nome": "Frigobar", "categoria": "frigobar"}, {"codigo": "681", "nome": "Frigobar Retrô Azul", "categoria": "frigobar"}, {"codigo": "682", "nome": "Frigobar Retrô Vermelho", "categoria": "frigobar"}, {"codigo": "316", "nome": "Frigobar Cinza", "categoria": "frigobar"}, {"codigo": "477", "nome": "Frigobar PL", "categoria": "frigobar"}, {"codigo": "683", "nome": "Frigobar Preto", "categoria": "frigobar"}, {"codigo": "224", "nome": "Futon Bege", "categoria": "almofadas"}, {"codigo": "156", "nome": "Futon cinza", "categoria": "almofadas"}, {"codigo": "223", "nome": "Futon cinza escuro", "categoria": "almofadas"}, {"codigo": "225", "nome": "Futon Verde", "categoria": "almofadas"}, {"codigo": "761", "nome": "Geladeira Branca", "categoria": "Geladeira"}, {"codigo": "319", "nome": "Ilha GG", "categoria": "Puffs"}, {"codigo": "376", "nome": "Jardineira", "categoria": "Banquetas"}, {"codigo": "344", "nome": "Kit", "categoria": "Geral"}, {"codigo": "90898", "nome": "Kit Lixeira reciclável", "categoria": "lixeiras"}, {"codigo": "10", "nome": "Lixeira", "categoria": "lixeiras"}, {"codigo": "219", "nome": "Lixeira com cinzeiro", "categoria": "lixeiras"}, {"codigo": "408", "nome": "Lixeira Inox", "categoria": "lixeiras"}, {"codigo": "486", "nome": "Lixeira media 50 litros", "categoria": "lixeiras"}, {"codigo": "691", "nome": "Locação de mobilairo", "categoria": "almofadas"}, {"codigo": "669", "nome": "Locação de Mobiliario Moto Capital 2025", "categoria": "Geral"}, {"codigo": "483", "nome": "Locker 16 portas", "categoria": "Outros"}, {"codigo": "601", "nome": "Luminária de Chão Imperial Dourada", "categoria": "Luminárias"}, {"codigo": "602", "nome": "Luminária de Chão Luxo Palha e Couro", "categoria": "Luminárias"}, {"codigo": "603", "nome": "Luminária de Chão Metálica", "categoria": "Luminárias"}, {"codigo": "607", "nome": "Luminária De Chão Metálica Preta", "categoria": "Luminárias"}, {"codigo": "600", "nome": "Luminária de Chão Paris Madeira Maciça", "categoria": "Luminárias"}, {"codigo": "608", "nome": "Luminiária De Chão Curvada Preta", "categoria": "Luminárias"}, {"codigo": "568", "nome": "Material do outro pedido", "categoria": "SERVIÇOS"}, {"codigo": "169", "nome": "MDF 1,20x0,6 Branco", "categoria": "Tampo de MDF"}, {"codigo": "393", "nome": "MDF 1,20x0,6 Preto", "categoria": "Tampo de MDF"}, {"codigo": "206", "nome": "MDF 1,60x 0,8", "categoria": "Tampo de MDF"}, {"codigo": "105", "nome": "MDF 1,80x0,6", "categoria": "Tampo de MDF"}, {"codigo": "235", "nome": "MDF 135x0,5", "categoria": "Tampo de MDF"}, {"codigo": "238", "nome": "MDF 137x0,25", "categoria": "Tampo de MDF"}, {"codigo": "237", "nome": "MDF 166x0,90", "categoria": "Tampo de MDF"}, {"codigo": "236", "nome": "MDF 185x053", "categoria": "Tampo de MDF"}, {"codigo": "234", "nome": "MDF 1x0,50", "categoria": "Tampo de MDF"}, {"codigo": "153", "nome": "MDF Nogueira 1,35x0,5m", "categoria": "Tampo de MDF"}, {"codigo": "229", "nome": "MDF Preto 2,20x1m", "categoria": "Tampo de MDF"}, {"codigo": "230", "nome": "MDF Preto 2x1m", "categoria": "Tampo de MDF"}, {"codigo": "100", "nome": "MDF quadrado 70x70 Nogueira", "categoria": "Tampo de MDF"}, {"codigo": "110", "nome": "MDF quadrado 70x70cm Branco", "categoria": "Tampo de MDF"}, {"codigo": "511", "nome": "MDF quadrado 70x70cm Preto", "categoria": "Tampo De Bistrô"}, {"codigo": "155", "nome": "Meio da Ilha", "categoria": "Puffs"}, {"codigo": "715", "nome": "Mesa Cone Nogueira", "categoria": "Mesas"}, {"codigo": "725", "nome": "Mesa Cone Off White", "categoria": "almofadas"}, {"codigo": "281225", "nome": "Mesa de boteco", "categoria": "Mesas"}, {"codigo": "692", "nome": "Mesa de boteco Parceiro", "categoria": "Mesas"}, {"codigo": "983576", "nome": "Mesa de canto alta", "categoria": "Mesas de canto"}, {"codigo": "22", "nome": "Mesa de canto com tampo de vidro preto", "categoria": "Mesas de canto"}, {"codigo": "550", "nome": "Mesa de canto metal", "categoria": "Mesas de canto"}, {"codigo": "551", "nome": "Mesa de Canto Piramidal", "categoria": "Mesas de canto"}, {"codigo": "500", "nome": "Mesa de centro ampulheta LED", "categoria": "Moveis De LED"}, {"codigo": "585", "nome": "Mesa de Centro Bali", "categoria": "Mesa De Centro"}, {"codigo": "582", "nome": "Mesa de centro Berlim", "categoria": "Mesa De Centro"}, {"codigo": "384", "nome": "Mesa de Centro Cone Oval 1,10cm", "categoria": "Mesa De Centro"}, {"codigo": "383", "nome": "Mesa de Centro Cone Oval 1,20cm", "categoria": "Mesa De Centro"}, {"codigo": "689", "nome": "Mesa de centro de corda", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "152", "nome": "Mesa de Centro de Madeira Clara", "categoria": "Mesa De Centro"}, {"codigo": "569", "nome": "Mesa de Centro de madeira de demolição escura", "categoria": "Mesa De Centro"}, {"codigo": "571189", "nome": "Mesa de Centro de madeira de demolição quadrada", "categoria": "Mesa De Centro"}, {"codigo": "358", "nome": "Mesa de Centro de madeira de demolição quadrada com gaveta", "categoria": "Mesa De Centro"}, {"codigo": "357", "nome": "Mesa de Centro de madeira de demolição Retangular", "categoria": "Mesa De Centro"}, {"codigo": "666", "nome": "Mesa de Centro de Madeira NOVA", "categoria": "Mesa De Centro"}, {"codigo": "0897", "nome": "Mesa de centro de Pallet", "categoria": "Pallet"}, {"codigo": "675", "nome": "Mesa de Centro Fiore", "categoria": "Mesa De Centro"}, {"codigo": "676", "nome": "Mesa de Centro Fiore Clara", "categoria": "Mesa De Centro"}, {"codigo": "678", "nome": "Mesa de Centro Formosa Marrom Clara", "categoria": "Mesa De Centro"}, {"codigo": "677", "nome": "Mesa de Centro Formosa Marrom Escuro", "categoria": "Mesa De Centro"}, {"codigo": "684", "nome": "Mesa De Centro Grécia", "categoria": "Mesa De Centro"}, {"codigo": "583", "nome": "Mesa de Centro Merlin", "categoria": "Mesa De Centro"}, {"codigo": "613", "nome": "Mesa de centro Miami", "categoria": "Mesa De Centro"}, {"codigo": "481", "nome": "Mesa de Centro Moderna Dupla", "categoria": "Mesa De Centro"}, {"codigo": "490", "nome": "Mesa de Centro Moderna Dupla Preto", "categoria": "Mesa De Centro"}, {"codigo": "231", "nome": "Mesa de Centro Off White", "categoria": "Mesa De Centro"}, {"codigo": "501", "nome": "Mesa de centro redonda baixa LED", "categoria": "Moveis De LED"}, {"codigo": "385", "nome": "Mesa de Centro Retangular com pés em X", "categoria": "Mesa De Centro"}, {"codigo": "399", "nome": "Mesa de Centro Retangular Ripada", "categoria": "Mesa De Centro"}, {"codigo": "712", "nome": "Mesa De Chá", "categoria": "Mesas"}, {"codigo": "132", "nome": "Mesa de demolição 2,5m", "categoria": "Madeira de demolição"}, {"codigo": "133", "nome": "Mesa de demolição 3m", "categoria": "Madeira de demolição"}, {"codigo": "102", "nome": "Mesa de Metalon", "categoria": "Mesas"}, {"codigo": "108", "nome": "Mesa de Plastico", "categoria": "Mesas"}, {"codigo": "113", "nome": "Mesa de reunião 8 lugares de madeira", "categoria": "Mesas"}, {"codigo": "333", "nome": "Mesa de Reunião de 10 lugares com tampo em MDF", "categoria": "Tampo de MDF"}, {"codigo": "200", "nome": "Mesa diretiva", "categoria": "Mesas"}, {"codigo": "4544", "nome": "Mesa dobrável grande", "categoria": "Mesas"}, {"codigo": "201", "nome": "Mesa Dobrável Pequena", "categoria": "Mesas"}, {"codigo": "543", "nome": "Mesa em madeira base 3D", "categoria": "Mesas"}, {"codigo": "545", "nome": "Mesa em madeira ripada", "categoria": "Mesas"}, {"codigo": "752", "nome": "Mesa em Madeira Ripada Cor Mel", "categoria": "Mesas"}, {"codigo": "9", "nome": "Mesa Modular 1,20x0,6m com pés cromado", "categoria": "Mesas"}, {"codigo": "753", "nome": "Mesa Orgânica De Buffet Viola Verde", "categoria": "Mesas"}, {"codigo": "754", "nome": "Mesa Orgânica De Buffet Grão Verde", "categoria": "Mesas"}, {"codigo": "134", "nome": "Mesa redonda 10 lugares", "categoria": "Mesas"}, {"codigo": "752742", "nome": "Mesa redonda 6 lugares", "categoria": "Mesas"}, {"codigo": "528144", "nome": "Mesa Redonda 8 lugares", "categoria": "Mesas"}, {"codigo": "375", "nome": "Mesa Redonda AG", "categoria": "Mesas"}, {"codigo": "750", "nome": "Mesa Redonda Verona", "categoria": "Mesas"}, {"codigo": "311", "nome": "Microondas", "categoria": "Geral"}, {"codigo": "318", "nome": "Montagem", "categoria": "SERVIÇOS"}, {"codigo": "232", "nome": "Moveis Perdidos", "categoria": "perdas"}, {"codigo": "632", "nome": "Namoradeira De Fibra Azul", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "686", "nome": "Namoradeiras De Corda Náutica Areia Com Assento Branco", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "620", "nome": "Namoradeiras De Corda Náutica Azul Com Assento Cinza", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "233", "nome": "Ombrelone 2,7M", "categoria": "Ombrelones"}, {"codigo": "168823", "nome": "Ombrelone 3M", "categoria": "Ombrelones"}, {"codigo": "128", "nome": "Painel", "categoria": "Outros"}, {"codigo": "166", "nome": "Passarela vermelha 1,20x8", "categoria": "Outros"}, {"codigo": "216", "nome": "Personalização de material", "categoria": "SERVIÇOS"}, {"codigo": "554", "nome": "Planta Areca bambu Pequeno", "categoria": "planta"}, {"codigo": "549", "nome": "Planta Dracena Arbórea Grande", "categoria": "planta"}, {"codigo": "559", "nome": "Planta Dracena Arborea Pequena", "categoria": "planta"}, {"codigo": "558", "nome": "Planta Palmeira Rabo de Raposa", "categoria": "planta"}, {"codigo": "710", "nome": "Planta Palmeira Veitchia", "categoria": "planta"}, {"codigo": "711", "nome": "Planta Palmeira Veitchia .", "categoria": "planta"}, {"codigo": "591", "nome": "Planta Palmeiras gueroba", "categoria": "planta"}, {"codigo": "593", "nome": "Planta Pleomele compacta", "categoria": "planta"}, {"codigo": "592", "nome": "Planta Pleomele reflexa", "categoria": "planta"}, {"codigo": "419", "nome": "Planta Raphis Grande", "categoria": "planta"}, {"codigo": "418", "nome": "Planta Raphis Pequena", "categoria": "planta"}, {"codigo": "353", "nome": "Poço de enfeite", "categoria": "enfeite"}, {"codigo": "630", "nome": "Poltrona Com Braço Corda Náutica Corda Azul e Estofado Cinza", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "312", "nome": "Poltrona Anita Branca", "categoria": "Poltronas"}, {"codigo": "350", "nome": "Poltrona Anita Preta", "categoria": "Poltronas"}, {"codigo": "505", "nome": "Poltrona barbará Giratória", "categoria": "Poltronas"}, {"codigo": "411", "nome": "Poltrona Brenda", "categoria": "Poltronas"}, {"codigo": "151", "nome": "Poltrona com braço azul", "categoria": "Poltronas"}, {"codigo": "212", "nome": "Poltrona com braço branca", "categoria": "Poltronas"}, {"codigo": "282883", "nome": "Poltrona com braço de metal", "categoria": "Poltronas"}, {"codigo": "341", "nome": "Poltrona com braço preta", "categoria": "Poltronas"}, {"codigo": "685", "nome": "Poltrona Corda Náutica Areia Assento Branco Arredondada", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "629", "nome": "Poltrona Corda Náutica Azul", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "633", "nome": "Poltrona Corda Náutica Azul Assento Cinza Arredondada", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "628", "nome": "Poltrona corda náutica verde musgo", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "501172", "nome": "Poltrona de madeira de demolição", "categoria": "Madeira de demolição"}, {"codigo": "548", "nome": "Poltrona de madeira de demolição (clara)", "categoria": "Poltronas"}, {"codigo": "195", "nome": "Poltrona EGG Branca", "categoria": "Poltronas"}, {"codigo": "631", "nome": "Poltrona Em Fibra Azul Assento Creme", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "719323", "nome": "Poltrona emilia giratória branca", "categoria": "Poltronas"}, {"codigo": "679883", "nome": "Poltrona emilia giratória Preta", "categoria": "Poltronas"}, {"codigo": "207", "nome": "Poltrona emilia pe de madeira", "categoria": "Poltronas"}, {"codigo": "764", "nome": "Poltrona Frida Azul", "categoria": "Poltronas"}, {"codigo": "758", "nome": "Poltrona Frida Verde", "categoria": "Poltronas"}, {"codigo": "167", "nome": "Poltrona Giratória couríssimo", "categoria": "Poltronas"}, {"codigo": "645", "nome": "Poltrona Imperador Chocolate", "categoria": "Poltronas"}, {"codigo": "705", "nome": "Poltrona Imperatriz", "categoria": "Poltronas"}, {"codigo": "149", "nome": "Poltrona Isa Cinza", "categoria": "Poltronas"}, {"codigo": "717", "nome": "Poltrona Itália com corda náutica bege", "categoria": "Poltronas"}, {"codigo": "412", "nome": "Poltrona Jamile", "categoria": "Poltronas"}, {"codigo": "506", "nome": "Poltrona Jana", "categoria": "Poltronas"}, {"codigo": "745", "nome": "Poltrona Laguna", "categoria": "Poltronas"}, {"codigo": "496", "nome": "Poltrona LED", "categoria": "Moveis De LED"}, {"codigo": "751", "nome": "Poltrona Luiz Felipe", "categoria": "Poltronas"}, {"codigo": "706", "nome": "Poltrona Luiz XV", "categoria": "Poltronas"}, {"codigo": "729", "nome": "Poltrona Marrocos", "categoria": "Poltronas"}, {"codigo": "123", "nome": "Poltrona Modular azul", "categoria": "Poltronas"}, {"codigo": "194", "nome": "Poltrona Modular Azul com Almofada Tecido", "categoria": "Poltronas"}, {"codigo": "208", "nome": "Poltrona Modular Azul Tecido", "categoria": "Poltronas"}, {"codigo": "315", "nome": "Poltrona Modular bege", "categoria": "Poltronas"}, {"codigo": "150", "nome": "Poltrona Modular branco", "categoria": "Poltronas"}, {"codigo": "114", "nome": "Poltrona modular preta", "categoria": "Poltronas"}, {"codigo": "731", "nome": "Poltrona New York Bege", "categoria": "Poltronas"}, {"codigo": "730", "nome": "Poltrona New York Verde Musgo", "categoria": "Poltronas"}, {"codigo": "757", "nome": "Poltrona OCCHIO", "categoria": "Poltronas"}, {"codigo": "638", "nome": "Poltrona Swan", "categoria": "Poltronas"}, {"codigo": "406", "nome": "Prateleira Cinza", "categoria": "Outros"}, {"codigo": "211", "nome": "Prateleira de ferro", "categoria": "Outros"}, {"codigo": "168", "nome": "Puff de Madeira de demolição", "categoria": "Puffs"}, {"codigo": "5422", "nome": "Puff de Pallet", "categoria": "Pallet"}, {"codigo": "884650", "nome": "Puff Gota Amarelo", "categoria": "Puffs"}, {"codigo": "232662", "nome": "Puff gota azul", "categoria": "Puffs"}, {"codigo": "236895", "nome": "Puff Gota Branco", "categoria": "Puffs"}, {"codigo": "101", "nome": "Puff Gota de Bolinhas", "categoria": "Puffs"}, {"codigo": "936882", "nome": "Puff Gota Laranja", "categoria": "Puffs"}, {"codigo": "694", "nome": "Puff Gota Marrom", "categoria": "Puffs"}, {"codigo": "159", "nome": "Puff Gota Preto", "categoria": "Puffs"}, {"codigo": "143", "nome": "Puff gota rosa", "categoria": "Puffs"}, {"codigo": "160", "nome": "Puff Gota Verde Claro", "categoria": "Puffs"}, {"codigo": "161", "nome": "Puff Gota Verde Escuro", "categoria": "Puffs"}, {"codigo": "330", "nome": "Puff Luiz XV Chocolate", "categoria": "Puffs"}, {"codigo": "329", "nome": "Puff Luiz XV Preto Brilhante", "categoria": "Puffs"}, {"codigo": "8", "nome": "Puff Meia Lua", "categoria": "Puffs"}, {"codigo": "495", "nome": "puff meia lua LED", "categoria": "Moveis De LED"}, {"codigo": "210", "nome": "Puff quadrado azul 1x1m", "categoria": "Puffs"}, {"codigo": "622494", "nome": "Puff quadrado grande branco", "categoria": "Puffs"}, {"codigo": "552", "nome": "Puff quadrado grande branco com Capitonê nas laterais", "categoria": "Puffs"}, {"codigo": "304644", "nome": "Puff Quadrado Grande com Capitonê", "categoria": "Puffs"}, {"codigo": "503", "nome": "Puff Quadrado Grande preto liso 80x80 cm", "categoria": "Puffs"}, {"codigo": "5", "nome": "Puff Quadrado Pequeno", "categoria": "Puffs"}, {"codigo": "497", "nome": "Puff quadrado pequeno LED", "categoria": "Moveis De LED"}, {"codigo": "641", "nome": "Puff Recamier Aurora Bege", "categoria": "Puffs"}, {"codigo": "640", "nome": "Puff Recamier Aurora Cinza", "categoria": "Puffs"}, {"codigo": "642", "nome": "Puff Recamier Aurora Verde", "categoria": "Puffs"}, {"codigo": "139", "nome": "Puff redondo grande branco", "categoria": "Puffs"}, {"codigo": "140", "nome": "Puff redondo grande preto", "categoria": "Puffs"}, {"codigo": "720", "nome": "Puff Redondo Palhinha", "categoria": "Puffs"}, {"codigo": "342", "nome": "Puff redondo pequeno", "categoria": "Puffs"}, {"codigo": "507", "nome": "Puff redondo pequeno pés em madeira", "categoria": "Puffs"}, {"codigo": "3454", "nome": "Puff Retangular Grande branco", "categoria": "Puffs"}, {"codigo": "09887", "nome": "Puff Retangular Grande preto", "categoria": "Puffs"}, {"codigo": "499", "nome": "Puff retangular LED", "categoria": "Moveis De LED"}, {"codigo": "106", "nome": "Púlpito", "categoria": "Púlpito"}, {"codigo": "479", "nome": "Púlpito e Mesa Hillsong Gênesis", "categoria": "Púlpito"}, {"codigo": "573", "nome": "Recamier Grande Marrom com Capitonê nas Laterais", "categoria": "Puffs"}, {"codigo": "562", "nome": "Recamier grande Preto com Capitonê nas laterais", "categoria": "Puffs"}, {"codigo": "148", "nome": "Recamier retangular azul", "categoria": "Puffs"}, {"codigo": "470776", "nome": "Rechaud 4L", "categoria": "Réchaud"}, {"codigo": "346", "nome": "rechaud triplo eletrico vermelho", "categoria": "Réchaud"}, {"codigo": "228", "nome": "Reposição de cadeira perdida", "categoria": "perdas"}, {"codigo": "416", "nome": "Reposição de vidro quebrado", "categoria": "Geral"}, {"codigo": "130", "nome": "Setlight", "categoria": "Outros"}, {"codigo": "480", "nome": "Setlight pequeno", "categoria": "Outros"}, {"codigo": "221", "nome": "Sofá vermelho 2 lugares", "categoria": "Sofás"}, {"codigo": "147", "nome": "Sofá 2 lugares preto", "categoria": "Sofás"}, {"codigo": "662", "nome": "Sofá 3 Lugares Areia 3 Lugares", "categoria": "Sofás"}, {"codigo": "146", "nome": "Sofá 3 lugares com pés em madeira Azul", "categoria": "Sofás"}, {"codigo": "1", "nome": "Sofá 3 lugares com pés em madeira Branco", "categoria": "Sofás"}, {"codigo": "2", "nome": "Sofá 3 lugares com pés em madeira preto", "categoria": "Sofás"}, {"codigo": "175", "nome": "Sofá arredondado Branco 2 lugares", "categoria": "Sofás"}, {"codigo": "176", "nome": "Sofá arredondado Branco 3 lugares", "categoria": "Sofás"}, {"codigo": "173", "nome": "Sofá arredondado preto 2 lugares", "categoria": "Sofás"}, {"codigo": "174", "nome": "Sofá arredondado preto 3 lugares", "categoria": "Sofás"}, {"codigo": "704", "nome": "Sofá Atlas Cinza Escuro", "categoria": "Sofás"}, {"codigo": "614", "nome": "Sofá Capri", "categoria": "Sofás"}, {"codigo": "625", "nome": "Sofá Capri Azul", "categoria": "Sofás"}, {"codigo": "326", "nome": "Sofá Chesterfield 3 lugares Chocolate", "categoria": "Sofás"}, {"codigo": "325", "nome": "Sofá Chesterfield 3 lugares Preto", "categoria": "Sofás"}, {"codigo": "651", "nome": "Sofá Chesterfield Modular Chocolate Parte Direita", "categoria": "Sofás"}, {"codigo": "650", "nome": "Sofá Chesterfield Modular Chocolate Parte do Meio", "categoria": "Sofás"}, {"codigo": "652", "nome": "Sofá Chesterfield Modular Chocolate Parte Esquerdo", "categoria": "Sofás"}, {"codigo": "654", "nome": "Sofá Chesterfield Modular Preto Brilhante Parte Direita", "categoria": "Sofás"}, {"codigo": "653", "nome": "Sofá Chesterfield Modular Preto Brilhante Parte do Meio", "categoria": "Sofás"}, {"codigo": "655", "nome": "Sofá Chesterfield Modular Preto Brilhante Parte Esquerdo", "categoria": "Sofás"}, {"codigo": "172", "nome": "Sofá com braço de metal", "categoria": "Sofás"}, {"codigo": "748", "nome": "Sofa Conjunto Maldivas", "categoria": "Sofás"}, {"codigo": "635", "nome": "Sofá Corda Náutica 3 Lugares verde musgo com estofado cinza", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "690", "nome": "Sofá Corda Náutica 3 Lugares Areia com estofado Branco", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "634", "nome": "Sofá Corda Náutica 3 Lugares corda azul e estofado cinza", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "663", "nome": "Sofá Corda Náutica 3 Lugares verde musgo com estofado Verde", "categoria": "Móveis de Corda náutica e Fibra"}, {"codigo": "432", "nome": "Sofá Itália Bege", "categoria": "Sofás"}, {"codigo": "584", "nome": "Sofá Itália cinza", "categoria": "Sofás"}, {"codigo": "502", "nome": "Sofá LED", "categoria": "Moveis De LED"}, {"codigo": "395", "nome": "Sofá Londres", "categoria": "Sofás"}, {"codigo": "703", "nome": "Sofá Lótus Cinza Claro", "categoria": "Sofás"}, {"codigo": "728", "nome": "Sofá Marrocos", "categoria": "Sofás"}, {"codigo": "708", "nome": "SOFA MODELO CURVA ATRAS LISO", "categoria": "Sofás"}, {"codigo": "709", "nome": "SOFA MODELO CURVA FRENTE LISO", "categoria": "Sofás"}, {"codigo": "171", "nome": "Sofá modular 2 lugares Branco", "categoria": "Sofás"}, {"codigo": "115", "nome": "Sofá modular 3 lugares Branco", "categoria": "Sofás"}, {"codigo": "331", "nome": "Sofá Mônaco Bege (cores variadas)", "categoria": "Sofás"}, {"codigo": "310", "nome": "Sofá Mônaco Verde (cores variadas)", "categoria": "Sofás"}, {"codigo": "65767", "nome": "Sofá Pallet", "categoria": "Pallet"}, {"codigo": "170", "nome": "Sofá pé cromado Branco 3 Lugares", "categoria": "Sofás"}, {"codigo": "222", "nome": "Sofá pé cromado Preto 3 Lugares", "categoria": "Sofás"}, {"codigo": "3544", "nome": "Sofa Retangular com Encosto ( Personalizáve l)", "categoria": "Puffs"}, {"codigo": "646", "nome": "Sofa Retangular Com Encosto Areia", "categoria": "Puffs"}, {"codigo": "217", "nome": "Sofá Vermelho 3 lugares", "categoria": "Sofás"}, {"codigo": "340", "nome": "Souplat", "categoria": "Outros"}, {"codigo": "337", "nome": "Tampo bistrô retangular", "categoria": "Tampo De Bistrô"}, {"codigo": "199", "nome": "Tampo de mesa quadrada 1x1 Vidro", "categoria": "Tampo de Mesa"}, {"codigo": "716", "nome": "Tampo de Mesa Redondo de Madeira Frisado", "categoria": "Tampo de Mesa"}, {"codigo": "435", "nome": "Tampo de vidro 1,4 Redondo", "categoria": "Tampo de Mesa"}, {"codigo": "434", "nome": "Tampo de Vidro Quadrado 1,40m", "categoria": "Tampo de Mesa"}, {"codigo": "127", "nome": "Tampo de vidro Redondo 1M", "categoria": "Tampo de Mesa"}, {"codigo": "1247", "nome": "Tampo de vidro redondo 60cm", "categoria": "Tampo De Bistrô"}, {"codigo": "116", "nome": "Tampo IPE quadrado bistro", "categoria": "Tampo De Bistrô"}, {"codigo": "142", "nome": "Tampo IPE quadrado bistro claro", "categoria": "Tampo De Bistrô"}, {"codigo": "117", "nome": "Tampo mesa Rustica 1,4x1,4M", "categoria": "Tampo de Mesa"}, {"codigo": "118", "nome": "Tampo mesa Rústica 2x1M", "categoria": "Tampo de Mesa"}, {"codigo": "409", "nome": "Tampo mesa Rústica 3x1M", "categoria": "Tampo de Mesa"}, {"codigo": "119", "nome": "Tampo mesa Rústica redonda", "categoria": "Tampo de Mesa"}, {"codigo": "1248", "nome": "Tampo redondo 60cm mdf Branco", "categoria": "Tampo de MDF"}, {"codigo": "512", "nome": "Tampo redondo 60cm mdf Preto", "categoria": "Tampo de MDF"}, {"codigo": "347", "nome": "Tampo Redondo Ipe Diametro 0,60cm", "categoria": "Tampo De Bistrô"}, {"codigo": "617", "nome": "Tapete Abstrato", "categoria": "Tapete"}, {"codigo": "184", "nome": "Tapete Belga Bruges", "categoria": "Tapete"}, {"codigo": "185", "nome": "Tapete Belga Bruxelas", "categoria": "Tapete"}, {"codigo": "436", "nome": "Tapete Belga Bruxelas Azul", "categoria": "Tapete"}, {"codigo": "744", "nome": "Tapete Belga Bruxelas Azul 2x2,50", "categoria": "Tapete"}, {"codigo": "441", "nome": "Tapete belga geométrica azul claro", "categoria": "Tapete"}, {"codigo": "440", "nome": "Tapete belga geométrica Taupe", "categoria": "Tapete"}, {"codigo": "186", "nome": "Tapete Belga Redondo", "categoria": "Tapete"}, {"codigo": "181", "nome": "Tapete Classic Abstract", "categoria": "Tapete"}, {"codigo": "438", "nome": "Tapete classic campeche", "categoria": "Tapete"}, {"codigo": "619", "nome": "Tapete Clássico Oriental", "categoria": "Tapete"}, {"codigo": "581", "nome": "Tapete contemporâneo", "categoria": "Tapete"}, {"codigo": "308", "nome": "Tapete Eden Cinza", "categoria": "Tapete"}, {"codigo": "417", "nome": "Tapete Geométrico Retangular Aurora", "categoria": "Tapete"}, {"codigo": "334", "nome": "Tapete Grama", "categoria": "Tapete"}, {"codigo": "179", "nome": "Tapete Herat Siena Cinza", "categoria": "Tapete"}, {"codigo": "187", "nome": "Tapete Home Tech", "categoria": "Tapete"}, {"codigo": "587", "nome": "Tapete Importado Egípcio Belga Turco", "categoria": "Tapete"}, {"codigo": "437", "nome": "Tapete Listrado Aurora", "categoria": "Tapete"}, {"codigo": "624", "nome": "Tapete Mersey", "categoria": "Tapete"}, {"codigo": "178", "nome": "Tapete Michelangelo", "categoria": "Tapete"}, {"codigo": "679", "nome": "Tapete Moderno Lisboa Turco", "categoria": "Tapete"}, {"codigo": "309", "nome": "Tapete para Sala Realce Frame 56 Chumbo", "categoria": "Tapete"}, {"codigo": "182", "nome": "Tapete Pelo Macio Preto", "categoria": "Tapete"}, {"codigo": "467", "nome": "Tapete Peludo Bege", "categoria": "Tapete"}, {"codigo": "180", "nome": "Tapete Peludo Luxo", "categoria": "Tapete"}, {"codigo": "183", "nome": "Tapete Persa", "categoria": "Tapete"}, {"codigo": "305", "nome": "Tapete Poá cinza/branco", "categoria": "Tapete"}, {"codigo": "396", "nome": "Tapete Realce Jardim", "categoria": "Tapete"}, {"codigo": "442", "nome": "Tapete Renaissance Roma 50 preto", "categoria": "Tapete"}, {"codigo": "586", "nome": "Tapete Renaissance Vital", "categoria": "Tapete"}, {"codigo": "177", "nome": "Tapete Rimini", "categoria": "Tapete"}, {"codigo": "615", "nome": "tapete sisal", "categoria": "Tapete"}, {"codigo": "680", "nome": "Tapete Sisal Lancer", "categoria": "Tapete"}, {"codigo": "439", "nome": "Tapete venice 51 cinza", "categoria": "Tapete"}, {"codigo": "317", "nome": "Tecido Neon", "categoria": "tecido"}, {"codigo": "103", "nome": "Tecido xadrez", "categoria": "tecido"}, {"codigo": "158", "nome": "Tenda 5x5", "categoria": "Tenda"}, {"codigo": "303", "nome": "Toalha Preta Quadrada", "categoria": "Toalha De Mesa"}, {"codigo": "220", "nome": "Toalha 1x1 preta", "categoria": "Toalha De Mesa"}, {"codigo": "473", "nome": "Toalha branca de cetim 1x1", "categoria": "Toalha De Mesa"}, {"codigo": "299", "nome": "Toalha fronha branca", "categoria": "Toalha De Mesa"}, {"codigo": "136", "nome": "Toalha para mesa dobrável", "categoria": "Toalha De Mesa"}, {"codigo": "539", "nome": "Toalha para mesa dobrável de Cetim", "categoria": "Toalha De Mesa"}, {"codigo": "540", "nome": "Toalha para mesa dobrável (vai ate os pés)", "categoria": "Toalha De Mesa"}, {"codigo": "157", "nome": "Toalha redonda brocada", "categoria": "Toalha De Mesa"}, {"codigo": "162", "nome": "Toten", "categoria": "objetos"}, {"codigo": "191", "nome": "Tunel (estrutura box tuss 4x3m com malha tensionada)", "categoria": "Outros"}, {"codigo": "131", "nome": "Unifila", "categoria": "objetos"}, {"codigo": "612", "nome": "Unifila Base Cinza", "categoria": "objetos"}];
+
+// ── STORAGE ──────────────────────────────────────────────────────
+const SUPA_URL = 'https://kykjouyjhaedoyrpbhcs.supabase.co';
+const SUPA_KEY = 'sb_publishable_YJAGoW2VyFw1pJD_4Sluww_t5DGUITJ';
+const SK = 'feeling_manut_v1';
+
+// ── LOCAL STORAGE (fallback offline) ─────────────────────────
+function loadLocal(){ try{ return JSON.parse(localStorage.getItem(SK))||[]; }catch{ return []; } }
+function saveLocal(d){ localStorage.setItem(SK, JSON.stringify(d)); }
+
+// ── SYNC BAR ──────────────────────────────────────────────────
+function setSyncBar(state, count) {
+  const bar = document.getElementById('syncbar');
+  const ic  = document.getElementById('sync-icon');
+  const msg = document.getElementById('sync-msg');
+  const S = {
+    loading: { cls:'loading', icon:'<span class="spin">⏳</span>', text:'Carregando dados...' },
+    saving:  { cls:'loading', icon:'💾',  text:'Salvando no banco de dados...' },
+    ok:      { cls:'ok',      icon:'✅',  text:`Sincronizado · ${count||0} registros · visível em todos os computadores` },
+    err:     { cls:'err',     icon:'❌',  text:'Erro ao sincronizar. Verifique a conexão.' },
+    offline: { cls:'warn',    icon:'📴',  text:'Sem internet. Usando dados salvos localmente.' },
+  };
+  const s = S[state]||S.ok;
+  bar.className = 'syncbar ' + s.cls;
+  ic.innerHTML  = s.icon;
+  msg.textContent = s.text;
+}
+
+// ── SUPABASE HELPERS ──────────────────────────────────────────
+function supaHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SUPA_KEY,
+    'Authorization': 'Bearer ' + SUPA_KEY,
+    'Prefer': 'return=minimal'
+  };
+}
+
+// ── LOAD FROM SUPABASE ────────────────────────────────────────
+async function loadFromSheets() {
+  setSyncBar('loading');
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/manutencao?order=id.desc&limit=1000`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = await res.json();
+    if (rows && rows.length) {
+      items = rows;
+      saveLocal(items);
+      setSyncBar('ok', items.length);
+    } else {
+      items = loadLocal();
+      setSyncBar('ok', items.length);
+    }
+  } catch(e) {
+    items = loadLocal();
+    setSyncBar('offline');
+  }
+  render();
+}
+
+// ── SAVE TO SUPABASE ──────────────────────────────────────────
+let syncTimer = null;
+function save(data) {
+  saveLocal(data);
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => pushToSheets(data), 1500);
+}
+
+async function pushToSheets(data) {
+  setSyncBar('saving');
+  try {
+    // Delete all existing rows then insert fresh
+    await fetch(`${SUPA_URL}/rest/v1/manutencao?id=gte.0`, {
+      method: 'DELETE',
+      headers: supaHeaders()
+    });
+    if (data.length) {
+      const res = await fetch(`${SUPA_URL}/rest/v1/manutencao`, {
+        method: 'POST',
+        headers: { ...supaHeaders(), 'Prefer': 'return=minimal' },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err);
+      }
+    }
+    setSyncBar('ok', data.length);
+  } catch(e) {
+    console.error('Supabase save error:', e);
+    setSyncBar('err');
+  }
+  syncTimer = null;
+}
+
+// ── STATE ─────────────────────────────────────────────────────────
+let items = loadLocal(), activeTab = 'open';
+
+// ── INIT ──────────────────────────────────────────────────────
+document.getElementById('inp-data').value = new Date().toISOString().split('T')[0];
+loadFromSheets();
+setInterval(() => { if (!syncTimer) loadFromSheets(); }, 30000);
+
+// ── AUTOCOMPLETE ──────────────────────────────────────────────────
+const iProd = document.getElementById('inp-prod');
+const drop  = document.getElementById('ac-drop');
+let ddIdx = -1;
+
+// Track if user is touching inside dropdown - prevents blur-close race on iOS
+let touchingDrop = false;
+drop.addEventListener('touchstart', () => { touchingDrop = true; }, { passive: true });
+drop.addEventListener('touchend', () => { setTimeout(() => { touchingDrop = false; }, 300); }, { passive: true });
+
+iProd.addEventListener('blur', () => {
+  if (!touchingDrop) setTimeout(() => drop.classList.remove('open'), 150);
+});
+
+iProd.addEventListener('input', () => {
+  const q = iProd.value.trim().toLowerCase();
+  if (!q) { drop.classList.remove('open'); return; }
+  const hits = CATALOG.filter(p => p.nome.toLowerCase().includes(q) || p.codigo.includes(q)).slice(0, 12);
+  if (!hits.length) { drop.classList.remove('open'); return; }
+  drop.innerHTML = hits.map((p,i) =>
+    `<div class="ac-item" data-i="${i}" data-cod="${p.codigo}" data-nome="${p.nome}" data-cat="${p.categoria}">
+      <strong>${p.codigo}</strong><span class="nome">${p.nome}</span><span class="ct">${p.categoria}</span>
+    </div>`).join('');
+  // attach touch+click for both iOS and desktop
+  drop.querySelectorAll('.ac-item').forEach(el => {
+    el.addEventListener('touchstart', () => pickProd(el), { passive: true });
+    el.addEventListener('mousedown', (e) => { e.preventDefault(); pickProd(el); });
+  });
+  drop.classList.add('open'); ddIdx = -1;
+});
+
+iProd.addEventListener('keydown', e => {
+  const its = drop.querySelectorAll('.ac-item');
+  if (e.key==='ArrowDown'){ ddIdx=Math.min(ddIdx+1,its.length-1); hiDD(its); e.preventDefault(); }
+  if (e.key==='ArrowUp')  { ddIdx=Math.max(ddIdx-1,0);            hiDD(its); e.preventDefault(); }
+  if (e.key==='Enter' && ddIdx>=0){ its[ddIdx].click(); e.preventDefault(); }
+  if (e.key==='Escape') drop.classList.remove('open');
+});
+
+function hiDD(its){ its.forEach((el,i)=>el.classList.toggle('hi',i===ddIdx)); }
+
+function pickProd(el) {
+  document.getElementById('h-cod').value = el.dataset.cod;
+  document.getElementById('h-cat').value = el.dataset.cat;
+  iProd.value = `${el.dataset.cod} — ${el.dataset.nome}`;
+  drop.classList.remove('open');
+}
+
+document.addEventListener('touchstart', e => {
+  if (!e.target.closest('.ac-wrap')) drop.classList.remove('open');
+}, { passive: true });
+document.addEventListener('mousedown', e => {
+  if (!e.target.closest('.ac-wrap')) drop.classList.remove('open');
+});
+
+// ── PRIORITY ──────────────────────────────────────────────────────
+const MAX_DAYS = { 'Crítica': 5, 'Média': 10, 'Baixa': 15 };
+
+function setPrio(btn) {
+  document.querySelectorAll('.prio-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById('h-prio').value = btn.dataset.p;
+  updPreview();
+}
+
+// ── QUANTITY ──────────────────────────────────────────────────────
+function chgQty(d){
+  const el = document.getElementById('input-qtd');
+  el.value = Math.max(1, (parseInt(el.value)||1) + d);
+}
+
+// ── PREVIEW ───────────────────────────────────────────────────────
+function addDays(s, n){ const d=new Date(s+'T12:00:00'); d.setDate(d.getDate()+n); return d.toISOString().split('T')[0]; }
+
+function updPreview() {
+  const entrada  = document.getElementById('inp-data').value;
+  const evento   = document.getElementById('inp-evento').value;
+  const prio     = document.getElementById('h-prio').value;
+  const icon     = document.getElementById('prev-icon');
+  const dateEl   = document.getElementById('prev-date');
+  const labelEl  = document.getElementById('prev-label');
+  const hidden   = document.getElementById('h-prev');
+  const box      = document.getElementById('prev-box');
+
+  if (!entrada) { dateEl.textContent='—'; labelEl.textContent=''; hidden.value=''; box.style.borderColor='var(--border)'; icon.textContent='📅'; return; }
+
+  const maxD = MAX_DAYS[prio] || 15;
+  const prazoMax = addDays(entrada, maxD);
+  let prev, orig;
+
+  if (evento && evento < prazoMax) {
+    prev = evento; orig = `📌 Evento · prazo máx. ${maxD}d`;
+    box.style.borderColor = 'var(--amber)'; icon.textContent = '⚠️';
+  } else {
+    prev = prazoMax; orig = `⏱ Prazo máx. ${maxD} dias (${prio||'sem prioridade'})`;
+    box.style.borderColor = 'var(--border)'; icon.textContent = '📅';
+  }
+
+  const [y,m,d2] = prev.split('-');
+  dateEl.textContent = `${d2}/${m}/${y}`;
+  hidden.value = prev;
+
+  const rem = Math.floor((new Date(prev+'T12:00:00') - Date.now()) / 86400000);
+  if (rem < 0)      { box.style.borderColor='var(--red)'; icon.textContent='🚨'; orig += ` · ATRASADO ${Math.abs(rem)}d`; }
+  else if (rem <= 2){ box.style.borderColor='var(--red)'; icon.textContent='⚠️'; orig += ` · ${rem}d restante${rem!==1?'s':''}!`; }
+  else if (rem <= 5){ box.style.borderColor='var(--amber)'; }
+  labelEl.textContent = orig;
+}
+
+// ── ADD ITEM ──────────────────────────────────────────────────────
+function addItem() {
+  const nome   = iProd.value.trim();
+  const codigo = document.getElementById('h-cod').value;
+  const cat    = document.getElementById('h-cat').value;
+  const resp   = document.getElementById('sel-resp').value;
+  const solic  = document.getElementById('sel-solic').value;
+  const def    = document.getElementById('sel-def').value;
+  const prio   = document.getElementById('h-prio').value;
+  const status = document.getElementById('sel-status').value;
+  const data   = document.getElementById('inp-data').value;
+  const evento = document.getElementById('inp-evento').value;
+  const prev   = document.getElementById('h-prev').value || (data ? addDays(data, MAX_DAYS[prio]||15) : '');
+  const obs    = document.getElementById('inp-obs').value.trim();
+  const qtd    = parseInt(document.getElementById('input-qtd').value)||1;
+
+  if (!nome)  { toast('⚠️ Informe o produto', 'warn'); return; }
+  if (!resp)  { toast('⚠️ Selecione o responsável', 'warn'); return; }
+  if (!prio)  { toast('⚠️ Selecione a prioridade', 'warn'); return; }
+  if (!data)  { toast('⚠️ Informe a data de entrada', 'warn'); return; }
+
+  items.unshift({
+    id: Date.now(),
+    codigo, nome: codigo ? nome.split('—').slice(1).join('—').trim() : nome,
+    cat, resp, solic, def, prio, status, data, evento, prev, obs, qtd,
+    dataConcl: null
+  });
+  save(items); render(); resetForm();
+  toast('✅ Item registrado!', 'ok');
+}
+
+function resetForm() {
+  iProd.value=''; document.getElementById('h-cod').value=''; document.getElementById('h-cat').value='';
+  document.getElementById('sel-resp').value=''; document.getElementById('sel-solic').value=''; document.getElementById('sel-def').value='';
+  document.getElementById('h-prio').value=''; document.getElementById('inp-obs').value='';
+  document.getElementById('inp-evento').value=''; document.getElementById('h-prev').value='';
+  document.getElementById('input-qtd').value='1';
+  document.getElementById('inp-data').value = new Date().toISOString().split('T')[0];
+  document.querySelectorAll('.prio-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('prev-date').textContent='—';
+  document.getElementById('prev-label').textContent='';
+  document.getElementById('prev-icon').textContent='📅';
+  document.getElementById('prev-box').style.borderColor='var(--border)';
+}
+
+// ── ACTIONS ───────────────────────────────────────────────────────
+function conclude(id) {
+  const it = items.find(i=>i.id===id); if(!it) return;
+  it.status='Concluído'; it.dataConcl=new Date().toISOString().split('T')[0];
+  save(items); render(); toast('✅ Item concluído!','ok');
+}
+function reopen(id) {
+  const it = items.find(i=>i.id===id); if(!it) return;
+  it.status='Em Manutenção'; it.dataConcl=null;
+  save(items); render(); toast('🔄 Item reaberto','warn');
+}
+function remove(id) {
+  if(!confirm('Remover este registro permanentemente?')) return;
+  items = items.filter(i=>i.id!==id);
+  save(items); render(); toast('🗑 Removido','warn');
+}
+function chgStatus(id, val) {
+  const it = items.find(i=>i.id===id); if(!it) return;
+  it.status=val; save(items); render();
+}
+
+// ── TABS / FILTERS ────────────────────────────────────────────────
+function setTab(t,el) {
+  activeTab=t;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active'); render();
+}
+
+// ── RENDER ────────────────────────────────────────────────────────
+function fmtD(s){ if(!s) return ''; const [y,m,d]=s.split('-'); return `${d}/${m}/${y}`; }
+
+function render() {
+  const q   = (document.getElementById('srch').value||'').toLowerCase();
+  const open = items.filter(i=>i.status!=='Concluído');
+  const done = items.filter(i=>i.status==='Concluído');
+
+  document.getElementById('tc-open').textContent = open.length;
+  document.getElementById('tc-done').textContent = done.length;
+  document.getElementById('tc-all').textContent  = items.length;
+  document.getElementById('kpi-open').textContent = items.filter(i=>i.status==='Em Manutenção').length;
+  document.getElementById('kpi-envio').textContent = items.filter(i=>i.status==='Aguardando Enviar para Manutenção').length;
+  document.getElementById('kpi-crit').textContent = open.filter(i=>i.prio==='Crítica').length;
+  document.getElementById('kpi-done').textContent = done.length;
+
+  let filtered = activeTab==='open' ? open : activeTab==='done' ? done : items;
+
+  // prioridade filter
+  const prioFlt = document.getElementById('sel-prio-flt').value;
+  if (prioFlt) filtered = filtered.filter(i => i.prio === prioFlt);
+
+  // text search
+  if (q) filtered = filtered.filter(i =>
+    (i.nome||'').toLowerCase().includes(q) ||
+    (i.codigo||'').toLowerCase().includes(q) ||
+    (i.resp||'').toLowerCase().includes(q) ||
+    (i.def||'').toLowerCase().includes(q)
+  );
+
+  // sort
+  const sortMode = document.getElementById('sel-sort').value;
+  const po = {'Crítica':0,'Média':1,'Baixa':2};
+  const dateVal = s => s ? new Date(s+'T12:00:00').getTime() : 9999999999999;
+  const FAR = 9999999999999;
+
+  if (sortMode === 'prio-data') {
+    // Primary: prioridade (Crítica→Média→Baixa), Secondary: previsão de saída mais próxima
+    filtered.sort((a,b) => {
+      const pd = (po[a.prio]??2) - (po[b.prio]??2);
+      if (pd !== 0) return pd;
+      return dateVal(a.prev) - dateVal(b.prev);
+    });
+  } else if (sortMode === 'data-asc') {
+    filtered.sort((a,b) => dateVal(a.prev) - dateVal(b.prev));
+  } else if (sortMode === 'data-desc') {
+    filtered.sort((a,b) => dateVal(b.prev) - dateVal(a.prev));
+  } else if (sortMode === 'entrada-desc') {
+    filtered.sort((a,b) => dateVal(b.data) - dateVal(a.data));
+  } else if (sortMode === 'entrada-asc') {
+    filtered.sort((a,b) => dateVal(a.data) - dateVal(b.data));
+  }
+
+  const list = document.getElementById('list');
+  if (!filtered.length) {
+    list.innerHTML=`<div class="empty"><div class="ei">📭</div><p>${activeTab==='open'?'Nenhum item em manutenção no momento.':'Nenhum registro encontrado.'}</p></div>`;
+    return;
+  }
+
+  const STATUS_MAP = {
+    'Em Manutenção':                   's-manut',
+    'Aguardando Peça':                 's-peca',
+    'Aguardando Enviar para Manutenção':'s-envio',
+    'Concluído':                       's-concl',
+  };
+
+  const STATUS_OPTS = ['Em Manutenção','Aguardando Peça','Aguardando Enviar para Manutenção'];
+
+  list.innerHTML = filtered.map(it => {
+    const isDone = it.status === 'Concluído';
+    const dias   = it.data ? Math.floor((Date.now()-new Date(it.data+'T12:00:00'))/86400000) : 0;
+    const pbCls  = it.prio ? 'pb-'+it.prio.toLowerCase().replace('é','e').replace('í','i') : '';
+
+    // deadline chip
+    let dlChip = '';
+    if (!isDone && it.prev) {
+      const rem = Math.floor((new Date(it.prev+'T12:00:00')-Date.now())/86400000);
+      let dc,db,dbd,di;
+      if (rem<0)      {dc='var(--red)'; db='#2a0f0f'; dbd='#6b1a1a'; di='🚨';}
+      else if(rem<=2) {dc='var(--red)'; db='#2a1010'; dbd='#5a2020'; di='⚠️';}
+      else if(rem<=5) {dc='var(--amber)';db='#2a1f0a';dbd='#5a3c10';di='⏰';}
+      else            {dc='var(--sky)';  db='#0f2430'; dbd='#1e3a45';di='📅';}
+      const rl = rem<0?`ATRASADO ${Math.abs(rem)}d`:rem===0?'Vence HOJE':`${rem}d restantes`;
+      dlChip = `<span class="chip" style="color:${dc};border-color:${dbd};background:${db};font-family:'Barlow Condensed',sans-serif;font-weight:700">${di} Saída: ${fmtD(it.prev)} · ${rl}</span>`;
+    }
+
+    const evChip = (!isDone && it.evento)
+      ? `<span class="chip evento">📌 Evento: ${fmtD(it.evento)}</span>` : '';
+
+    return `<div class="ic ${isDone?'done':''}">
+      <div class="ic-top">
+        <div class="pbar ${pbCls}"></div>
+        <div class="ic-info">
+          <div class="ic-name">${it.nome||'—'}</div>
+          <div class="ic-code">${it.codigo?`#${it.codigo}`:''} ${it.cat?`· ${it.cat}`:''}</div>
+        </div>
+        <span class="sbadge ${STATUS_MAP[it.status]||''}">${it.status}</span>
+      </div>
+      <div class="ic-meta">
+        <span class="chip resp">👤 ${it.resp}</span>
+        ${it.solic?`<span class="chip" style="color:var(--sky);border-color:#1e3a45;background:#0f2430">📋 ${it.solic}</span>`:''}
+        <span class="chip qtd">× ${it.qtd||1} unid.</span>
+        <span class="chip entry">📥 ${fmtD(it.data)}</span>
+        ${!isDone?`<span class="chip">${dias}d em manut.</span>`:''}
+        ${it.dataConcl?`<span class="chip" style="color:var(--teal);border-color:#1a5040;background:#0d2e20">✅ ${fmtD(it.dataConcl)}</span>`:''}
+        ${dlChip}${evChip}
+        ${it.def?`<span class="chip">🔩 ${it.def}</span>`:''}
+        ${it.prio?`<span class="chip">${it.prio==='Crítica'?'🔴':it.prio==='Média'?'🟡':'🟢'} ${it.prio}</span>`:''}
+      </div>
+      ${it.obs?`<div class="ic-obs">"${it.obs}"</div>`:''}
+      <div class="ic-acts">
+        ${!isDone?`
+          <select class="btn-a status-sel" onchange="chgStatus(${it.id},this.value)">
+            ${STATUS_OPTS.map(o=>`<option ${it.status===o?'selected':''}>${o}</option>`).join('')}
+          </select>
+          <button class="btn-a btn-done" onclick="conclude(${it.id})">✅ Concluir</button>
+        `:`<button class="btn-a btn-reopen" onclick="reopen(${it.id})">🔄 Reabrir</button>`}
+        <button class="btn-a btn-del" onclick="remove(${it.id})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── EXPORT EXCEL ──────────────────────────────────────────────────
+function exportData() {
+  if (!items.length) { toast('⚠️ Nenhum registro para exportar', 'warn'); return; }
+
+  // Load SheetJS if not yet loaded
+  if (typeof XLSX === 'undefined') {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = () => buildExcel();
+    document.head.appendChild(s);
+  } else {
+    buildExcel();
+  }
+}
+
+function fmtDExport(s) {
+  if (!s) return '';
+  const [y,m,d] = s.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function buildExcel() {
+  const wb = XLSX.utils.book_new();
+
+  // ── Sort: priority + deadline ─────────────────────────────────
+  const po = {'Crítica':0,'Média':1,'Baixa':2};
+  const dv = s => s ? new Date(s+'T12:00:00').getTime() : 9999999999999;
+  const sorted = [...items].sort((a,b) => {
+    const pd = (po[a.prio]??2) - (po[b.prio]??2);
+    return pd !== 0 ? pd : dv(a.prev) - dv(b.prev);
+  });
+
+  // ── Headers ───────────────────────────────────────────────────
+  const COLS = [
+    'Nº','Produto','Código','Categoria','Solicitado por','Responsável',
+    'Tipo de Defeito','Prioridade','Qtd','Status',
+    'Data Entrada','Previsão Saída','Necessário p/ Evento',
+    'Data Conclusão','Dias em Manut.','Observações'
+  ];
+
+  const rows = sorted.map((it, idx) => {
+    const dias = it.data ? Math.floor((Date.now()-new Date(it.data+'T12:00:00'))/86400000) : 0;
+    return [
+      idx + 1,
+      it.nome || '',
+      it.codigo || '',
+      it.cat || '',
+      it.solic || '',
+      it.resp || '',
+      it.def || '',
+      it.prio || '',
+      it.qtd || 1,
+      it.status || '',
+      fmtDExport(it.data),
+      fmtDExport(it.prev),
+      fmtDExport(it.evento),
+      fmtDExport(it.dataConcl),
+      it.dataConcl ? '' : dias,
+      it.obs || ''
+    ];
+  });
+
+  const wsData = [COLS, ...rows];
+  const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+  // ── Column widths ─────────────────────────────────────────────
+  ws['!cols'] = [
+    {wch:5},{wch:36},{wch:10},{wch:20},{wch:18},{wch:22},
+    {wch:26},{wch:12},{wch:6},{wch:28},
+    {wch:14},{wch:16},{wch:20},
+    {wch:16},{wch:14},{wch:40}
+  ];
+
+  // ── Freeze header row ─────────────────────────────────────────
+  ws['!freeze'] = { xSplit: 0, ySplit: 1 };
+
+  // ── Style header row ──────────────────────────────────────────
+  const headerStyle = {
+    font:  { bold: true, color: { rgb: 'FFFFFF' }, sz: 11, name: 'Calibri' },
+    fill:  { fgColor: { rgb: '1A2340' }, patternType: 'solid' },
+    alignment: { horizontal: 'center', vertical: 'center', wrapText: true },
+    border: {
+      bottom: { style: 'medium', color: { rgb: '8DC63F' } }
+    }
+  };
+  COLS.forEach((_, ci) => {
+    const cellRef = XLSX.utils.encode_cell({ r: 0, c: ci });
+    if (!ws[cellRef]) ws[cellRef] = {};
+    ws[cellRef].s = headerStyle;
+  });
+
+  // ── Style data rows ───────────────────────────────────────────
+  const prioColors = { 'Crítica': 'FDECEA', 'Média': 'FFF8E1', 'Baixa': 'F1F8E9' };
+  const statusColors = {
+    'Em Manutenção':                    'E3F2FD',
+    'Aguardando Peça':                  'EDE7F6',
+    'Aguardando Enviar para Manutenção':'FFF8E1',
+    'Concluído':                        'E8F5E9'
+  };
+  const thin = { style: 'thin', color: { rgb: 'DDDDDD' } };
+  const cellBorder = { top: thin, bottom: thin, left: thin, right: thin };
+
+  rows.forEach((row, ri) => {
+    const prio   = row[6];
+    const status = row[8];
+    const rowBg  = ri % 2 === 0 ? 'FFFFFF' : 'F8F9FA';
+
+    row.forEach((_, ci) => {
+      const cellRef = XLSX.utils.encode_cell({ r: ri + 1, c: ci });
+      if (!ws[cellRef]) ws[cellRef] = { v: '', t: 's' };
+
+      // priority column gets priority color (col 7), status col 9
+      let bg = rowBg;
+      if (ci === 7 && prioColors[prio])    bg = prioColors[prio];
+      if (ci === 9 && statusColors[status]) bg = statusColors[status];
+
+      ws[cellRef].s = {
+        font:  { sz: 10, name: 'Calibri', color: { rgb: '1A2340' },
+                 bold: ci === 1 },
+        fill:  { fgColor: { rgb: bg }, patternType: 'solid' },
+        alignment: {
+          horizontal: ci <= 1 || ci === 14 ? 'left' : 'center',
+          vertical: 'center',
+          wrapText: ci === 14
+        },
+        border: cellBorder
+      };
+    });
+  });
+
+  // ── Row heights ───────────────────────────────────────────────
+  ws['!rows'] = [{ hpt: 28 }, ...rows.map((r) => ({ hpt: r[14] ? 36 : 20 }))];
+
+  // ── Second sheet: only open items ────────────────────────────
+  const open = sorted.filter(it => it.status !== 'Concluído');
+  const wsOpen = XLSX.utils.aoa_to_sheet([
+    COLS,
+    ...open.map((it, idx) => {
+      const dias = it.data ? Math.floor((Date.now()-new Date(it.data+'T12:00:00'))/86400000) : 0;
+      return [
+        idx+1, it.nome||'', it.codigo||'', it.cat||'', it.solic||'', it.resp||'',
+        it.def||'', it.prio||'', it.qtd||1, it.status||'',
+        fmtDExport(it.data), fmtDExport(it.prev), fmtDExport(it.evento),
+        '', dias, it.obs||''
+      ];
+    })
+  ]);
+  wsOpen['!cols'] = ws['!cols'];
+  wsOpen['!freeze'] = { xSplit: 0, ySplit: 1 };
+  COLS.forEach((_, ci) => {
+    const ref = XLSX.utils.encode_cell({ r: 0, c: ci });
+    if (!wsOpen[ref]) wsOpen[ref] = {};
+    wsOpen[ref].s = headerStyle;
+  });
+
+  // ── Add sheets ────────────────────────────────────────────────
+  XLSX.utils.book_append_sheet(wb, ws,     '📋 Todos os Registros');
+  XLSX.utils.book_append_sheet(wb, wsOpen, '🔧 Em Manutenção');
+
+  // ── Download ─────────────────────────────────────────────────
+  const date = new Date().toISOString().split('T')[0];
+  XLSX.writeFile(wb, `Feeling_Manutencao_${date}.xlsx`);
+  toast(`⬇️ Excel gerado: ${items.length} registros`, 'ok');
+}
+
+// ── IMPORT ────────────────────────────────────────────────────────
+let pendingImport = [];
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const raw = JSON.parse(e.target.result);
+      // support both array and our export envelope
+      pendingImport = Array.isArray(raw) ? raw : (raw.dados || []);
+      if (!pendingImport.length) { toast('⚠️ Arquivo vazio ou inválido', 'warn'); return; }
+      document.getElementById('modal-count').textContent = pendingImport.length;
+      document.getElementById('modal-overlay').classList.add('open');
+    } catch {
+      toast('❌ Arquivo inválido. Use um .json exportado deste sistema.', 'warn');
+    }
+    event.target.value = ''; // reset so same file can be re-imported
+  };
+  reader.readAsText(file);
+}
+
+function doImport(mode) {
+  if (mode === 'replace') {
+    items = pendingImport;
+    save(items);
+    render();
+    toast(`🔄 ${items.length} registros substituídos com sucesso`, 'ok');
+  } else {
+    // merge: add only items whose id doesn't already exist
+    const existingIds = new Set(items.map(i => i.id));
+    const novos = pendingImport.filter(i => !existingIds.has(i.id));
+    items = [...novos, ...items];
+    save(items);
+    render();
+    toast(`➕ ${novos.length} novos registros adicionados`, 'ok');
+  }
+  closeModal();
+  pendingImport = [];
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  pendingImport = [];
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+render();
+</script>
+</body>
+</html>
