@@ -1,88 +1,8 @@
-feeling
-AMBIENTES
+drop policy if exists "Leitura pública" on manutencao;
+drop policy if exists "Inserção pública" on manutencao;
+drop policy if exists "Atualização pública" on manutencao;
+drop policy if exists "Exclusão pública" on manutencao;
+drop policy if exists "Acesso total" on manutencao;
 
-🔧 CONTROLE DE MANUTENÇÃO
-📊 ⬆️
-⏳
-Conectando ao Google Sheets...
-🔄 Atualizar
-⬆️
-IMPORTAR DADOS
-Foram encontrados 0 registros no arquivo. O que deseja fazer?
-CANCELAR
-➕ ADICIONAR AOS EXISTENTES
-🔄 SUBSTITUIR TUDO
-
-REGISTRAR ITEM PARA MANUTENÇÃO
-PRODUTO
-
-RESPONSÁVEL PELA MANUTENÇÃO
-          — Selecione o responsável —
-          Manutenção Interna
-          Cláudio
-          Valda
-          Orlando
-          Samuel
-        
-SOLICITADO POR
-          — Quem solicitou —
-          Amanda
-          Andreza
-          Bruna
-          Jeanis
-          Larissa
-          Luana
-          Marco
-          Yure
-        
-TIPO DE DEFEITO
-          — Selecione o defeito —
-          Estrutura quebrada
-          Tecido rasgado / manchado
-          Pintura danificada
-          Peça faltando
-          Desgaste geral
-          Elétrico / Iluminação
-          Limpeza profunda
-          Outro
-        
-PRIORIDADE
-🔴 Crítica
-🟡 Média
-🟢 Baixa
-QUANTIDADE COM DEFEITO
-−
-
-+
-STATUS INICIAL
-          🔧 Em Manutenção
-          🔩 Aguardando Peça
-          📦 Aguardando Enviar para Manutenção
-        
-DATA DE ENTRADA
-NECESSÁRIO PARA EVENTO (OPCIONAL)
-Se preenchido, a previsão de saída será ajustada para esta data.
-PREVISÃO DE SAÍDA DA MANUTENÇÃO
-📅
-—
-
-OBSERVAÇÕES
-✚ REGISTRAR ENTRADA
-🔧 EM MANUTENÇÃO
-0
-✅ CONCLUÍDOS
-0
-📋 TODOS
-0
-🔍
-        Todas prioridades
-        🔴 Crítica
-        🟡 Média
-        🟢 Baixa
-      
-        ↑ Prioridade + Prazo
-        📅 Prazo mais próximo
-        📅 Prazo mais distante
-        🆕 Entrada mais recente
-        🕐 Entrada mais antiga
-      
+create policy "allow_all" on manutencao
+  for all to anon using (true) with check (true);
